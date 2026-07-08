@@ -1,0 +1,456 @@
+--[[
+    ╔══════════════════════════════════════════════════════════════╗
+    ║                                                              ║
+    ║                🎮 EA_FANG CUSTOM SPAMMER v1.5                ║
+    ║                                                              ║
+    ║          "Premium Spammer - EA_NAMELESS UI Style 💢"         ║
+    ║                                                              ║
+    ╚══════════════════════════════════════════════════════════════╝
+--]]
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local TextChatService = game:GetService("TextChatService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local SoundService = game:GetService("SoundService")
+local UserInputService = game:GetService("UserInputService")
+
+-- Screen GUI Frame Base
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "EA_Fang_Spammer_Library"
+ScreenGui.Parent = game.CoreGui or PlayerGui
+ScreenGui.ResetOnSpawn = false
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+-- Global Sound Trigger
+local function playTapSound()
+    local sound = Instance.new("Sound")
+    sound.SoundId = "rbxassetid://107406973902030"
+    sound.Volume = 2.5
+    sound.PlaybackSpeed = 1
+    sound.Parent = SoundService
+    sound:Play()
+    game:GetService("Debris"):AddItem(sound, 2)
+end
+
+-- Premium Dictionary Configuration
+local SpamWords = {
+    "🍛 DALCHAWAL", "🥘 KARI CHAWAL", "🍚 RASMALAI", "🧆 GULAB JAMUN", "🥛 LASSI",
+    "🍗 BIRYANI", "🌯 KATI ROLL", "🍛 CHHOLE", "🥘 PAV BHAJI", "🧆 SAMOSA",
+    "🍚 IDLI", "🥘 DOSA", "🍛 UTTHAPAM", "🍚 PONGAL", "🥛 CHAAS",
+    "🍗 TANDOORI", "🌯 KULCHA", "🍛 PANEER", "🥘 MALAI KOFTA", "🧆 KACHORI",
+    "🍚 PULAO", "🥘 RAJMA", "🍛 KADHI", "🧆 ALOO TIKKI", "🍗 BUTTER CHICKEN",
+    "🌯 NAAN", "🍛 SHAHI PANEER", "🥘 DAL MAKHANI", "🍚 JEERA RICE", "🧆 MIRCHI",
+    "🍗 FISH CURRY", "🥘 EGG CURRY", "🍛 VEG BIRYANI", "🍚 LEMON RICE", "🥛 SAUNF",
+    "🧆 PAAN", "🍛 MUSHROOM", "🥘 PALAK PANEER", "🍚 TOMATO RICE", "🍗 CHICKEN 65",
+    "🌯 ROTI", "🍛 GATTI", "🥘 KHICHDI", "🧆 BHEL PURI", "🍗 MURGH MALAI",
+    "🍚 FRIED RICE", "🥘 NOODLES", "🍛 MANCHURIAN", "🧆 SPRING ROLL", "🍗 CHILLI CHICKEN",
+    "🔥 SPICY", "🧀 CHEESY", "🍛 EXTRA MASALA", "🥘 GARLIC NAAN", "🍚 BUTTER NAAN"
+}
+local CurrentPatternPool = {"__", "~~", "``", "@@", "++"}
+
+----------------------------------------------------------------
+-- DRAGGABLE MENU TOGGLE BUTTON (Custom Logo + "C.S" Text)
+----------------------------------------------------------------
+local ToggleBtn = Instance.new("TextButton")
+ToggleBtn.Name = "MenuToggle"
+ToggleBtn.Parent = ScreenGui
+ToggleBtn.Size = UDim2.new(0, 75, 0, 38)
+ToggleBtn.Position = UDim2.new(0.02, 0, 0.45, 0)
+ToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+ToggleBtn.Text = "" 
+ToggleBtn.ZIndex = 15
+
+local ToggleCorner = Instance.new("UICorner")
+ToggleCorner.CornerRadius = UDim.new(0, 6)
+ToggleCorner.Parent = ToggleBtn
+
+local ToggleStroke = Instance.new("UIStroke")
+ToggleStroke.Color = Color3.fromRGB(255, 0, 0)
+ToggleStroke.Thickness = 1.5
+ToggleStroke.Parent = ToggleBtn
+
+local ToggleLayout = Instance.new("UIListLayout")
+ToggleLayout.Parent = ToggleBtn
+ToggleLayout.FillDirection = Enum.FillDirection.Horizontal
+ToggleLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+ToggleLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+ToggleLayout.SortOrder = Enum.SortOrder.LayoutOrder
+ToggleLayout.Padding = UDim.new(0, 5)
+
+local ToggleLogoImg = Instance.new("ImageLabel")
+ToggleLogoImg.Name = "ToggleLogoImg"
+ToggleLogoImg.Parent = ToggleBtn
+ToggleLogoImg.Size = UDim2.new(0, 24, 0, 24)
+ToggleLogoImg.BackgroundTransparency = 1
+ToggleLogoImg.Image = "rbxassetid://12298407748" 
+ToggleLogoImg.ImageColor3 = Color3.fromRGB(255, 0, 0)
+ToggleLogoImg.LayoutOrder = 1
+ToggleLogoImg.ZIndex = 16
+
+local ToggleTxtLabel = Instance.new("TextLabel")
+ToggleTxtLabel.Name = "ToggleTxtLabel"
+ToggleTxtLabel.Parent = ToggleBtn
+ToggleTxtLabel.Size = UDim2.new(0, 25, 0, 24)
+ToggleTxtLabel.BackgroundTransparency = 1
+ToggleTxtLabel.Text = "C.S"
+ToggleTxtLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleTxtLabel.TextSize = 13
+ToggleTxtLabel.Font = Enum.Font.GothamBold
+ToggleTxtLabel.LayoutOrder = 2
+ToggleTxtLabel.ZIndex = 16
+
+-- Toggle Draggable Handler
+local toggleDragging, toggleDragInput, toggleDragStart, toggleStartPos
+ToggleBtn.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        toggleDragging = true
+        toggleDragStart = input.Position
+        toggleStartPos = ToggleBtn.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then toggleDragging = false end
+        end)
+    end
+end)
+ToggleBtn.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then toggleDragInput = input end
+end)
+UserInputService.InputChanged:Connect(function(input)
+    if input == toggleDragInput and toggleDragging then
+        local delta = input.Position - toggleDragStart
+        ToggleBtn.Position = UDim2.new(toggleStartPos.X.Scale, toggleStartPos.X.Offset + delta.X, toggleStartPos.Y.Scale, toggleStartPos.Y.Offset + delta.Y)
+    end
+end)
+
+----------------------------------------------------------------
+-- DRAGGABLE MAIN GUI WINDOW (EA_NAMELESS Style)
+----------------------------------------------------------------
+local MainMenu = Instance.new("ImageLabel")
+MainMenu.Name = "MainMenu"
+MainMenu.Parent = ScreenGui
+MainMenu.AnchorPoint = Vector2.new(0.5, 0.5)
+MainMenu.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+MainMenu.BorderColor3 = Color3.fromRGB(255, 0, 0)
+MainMenu.BorderSizePixel = 1
+MainMenu.Position = UDim2.new(0.5, 0, 0.5, 0)
+MainMenu.Size = UDim2.new(0, 240, 0, 315) -- Reduced height because limit bar is removed
+MainMenu.ZIndex = 9
+MainMenu.Image = "rbxassetid://159991693"
+MainMenu.ImageColor3 = Color3.fromRGB(255, 0, 0)
+MainMenu.ImageTransparency = 0.75
+MainMenu.ScaleType = Enum.ScaleType.Tile
+MainMenu.TileSize = UDim2.new(0, 25, 0, 25)
+MainMenu.Active = true
+MainMenu.Visible = false
+
+-- Title Bar Header Setup
+local TitleBar = Instance.new("Frame")
+TitleBar.Name = "TitleBar"
+TitleBar.Parent = MainMenu
+TitleBar.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TitleBar.BackgroundTransparency = 0.20
+TitleBar.Size = UDim2.new(1, 0, 0, 30)
+TitleBar.ZIndex = 10
+
+local TopLeftLogo = Instance.new("ImageLabel")
+TopLeftLogo.Name = "TopLeftLogo"
+TopLeftLogo.Parent = TitleBar
+TopLeftLogo.BackgroundTransparency = 1.00
+TopLeftLogo.Position = UDim2.new(0, 6, 0, 4)
+TopLeftLogo.Size = UDim2.new(0, 22, 0, 22)
+TopLeftLogo.Image = "rbxassetid://12298407748" 
+TopLeftLogo.ImageColor3 = Color3.fromRGB(255, 0, 0)
+TopLeftLogo.ZIndex = 12 
+
+local TitleText = Instance.new("TextLabel")
+TitleText.Name = "TitleText"
+TitleText.Parent = TitleBar
+TitleText.BackgroundTransparency = 1.00
+TitleText.Position = UDim2.new(0, 34, 0, 0) 
+TitleText.Size = UDim2.new(1, -40, 1, 0)
+TitleText.Font = Enum.Font.Unknown
+TitleText.Text = "EA_FANG"
+TitleText.TextColor3 = Color3.fromRGB(255, 0, 0)
+TitleText.TextSize = 16
+TitleText.TextXAlignment = Enum.TextXAlignment.Left
+TitleText.ZIndex = 11
+
+-- Main Window Draggable Handler
+local menuDragging, menuDragInput, menuDragStart, menuStartPos
+MainMenu.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        menuDragging = true
+        menuDragStart = input.Position
+        menuStartPos = MainMenu.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then menuDragging = false end
+        end)
+    end
+end)
+MainMenu.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then menuDragInput = input end
+end)
+UserInputService.InputChanged:Connect(function(input)
+    if input == menuDragInput and menuDragging then
+        local delta = input.Position - menuDragStart
+        MainMenu.Position = UDim2.new(menuStartPos.X.Scale, menuStartPos.X.Offset + delta.X, menuStartPos.Y.Scale, menuStartPos.Y.Offset + delta.Y)
+    end
+end)
+
+----------------------------------------------------------------
+-- BRANDING ATTACHED UP (Just Below Title Bar)
+----------------------------------------------------------------
+local TopBrandingFrame = Instance.new("Frame")
+TopBrandingFrame.Name = "TopBranding"
+TopBrandingFrame.Parent = MainMenu
+TopBrandingFrame.Size = UDim2.new(1, 0, 0, 55)
+TopBrandingFrame.Position = UDim2.new(0, 0, 0, 32)
+TopBrandingFrame.BackgroundTransparency = 1
+
+local CustomLabel1 = Instance.new("TextLabel")
+CustomLabel1.Parent = TopBrandingFrame
+CustomLabel1.Size = UDim2.new(1, 0, 0, 15)
+CustomLabel1.Position = UDim2.new(0, 0, 0, 4)
+CustomLabel1.BackgroundTransparency = 1
+CustomLabel1.Font = Enum.Font.GothamBold
+CustomLabel1.Text = "Fᴀɴɢ Cᴜsᴛᴏᴍᴇ Sᴘᴀᴍ💢"
+CustomLabel1.TextColor3 = Color3.fromRGB(255, 255, 255)
+CustomLabel1.TextSize = 11
+
+local CustomLabel2 = Instance.new("TextLabel")
+CustomLabel2.Parent = TopBrandingFrame
+CustomLabel2.Size = UDim2.new(1, 0, 0, 15)
+CustomLabel2.Position = UDim2.new(0, 0, 0, 20)
+CustomLabel2.BackgroundTransparency = 1
+CustomLabel2.Font = Enum.Font.GothamBold
+CustomLabel2.Text = "Sᴄʀɪᴘᴛ Bʏ Eᴀ_Fᴀɴɢ💢"
+CustomLabel2.TextColor3 = Color3.fromRGB(255, 0, 0)
+CustomLabel2.TextSize = 11
+
+local CustomLabel3 = Instance.new("TextLabel")
+CustomLabel3.Parent = TopBrandingFrame
+CustomLabel3.Size = UDim2.new(1, 0, 0, 15)
+CustomLabel3.Position = UDim2.new(0, 0, 0, 36)
+CustomLabel3.BackgroundTransparency = 1
+CustomLabel3.Font = Enum.Font.SourceSansItalic
+CustomLabel3.Text = "ɪɴsᴛᴀ » ea_fang"
+CustomLabel3.TextColor3 = Color3.fromRGB(180, 180, 180)
+CustomLabel3.TextSize = 12
+
+local TopSeparator = Instance.new("Frame")
+TopSeparator.Parent = TopBrandingFrame
+TopSeparator.Size = UDim2.new(0.9, 0, 0, 1)
+TopSeparator.Position = UDim2.new(0.05, 0, 1, 0)
+TopSeparator.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+TopSeparator.BorderSizePixel = 0
+
+----------------------------------------------------------------
+-- CORE CONTROLS INPUTS
+----------------------------------------------------------------
+local SenderBox = Instance.new("TextBox")
+SenderBox.Parent = MainMenu
+SenderBox.Size = UDim2.new(0, 100, 0, 24)
+SenderBox.Position = UDim2.new(0.05, 0, 0.31, 0)
+SenderBox.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+SenderBox.PlaceholderText = "[YOUR NAME]"
+SenderBox.Text = ""
+SenderBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+SenderBox.TextSize = 11
+SenderBox.Font = Enum.Font.SourceSansSemibold
+
+local SenderStroke = Instance.new("UIStroke")
+SenderStroke.Color = Color3.fromRGB(255, 0, 0)
+SenderStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+SenderStroke.Thickness = 1
+SenderStroke.Parent = SenderBox
+
+local TargetBox = Instance.new("TextBox")
+TargetBox.Parent = MainMenu
+TargetBox.Size = UDim2.new(0, 100, 0, 24)
+TargetBox.Position = UDim2.new(0.52, 0, 0.31, 0)
+TargetBox.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TargetBox.PlaceholderText = "[TARGET NAME]"
+TargetBox.Text = ""
+TargetBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+TargetBox.TextSize = 11
+TargetBox.Font = Enum.Font.SourceSansSemibold
+
+local TargetStroke = Instance.new("UIStroke")
+TargetStroke.Color = Color3.fromRGB(255, 0, 0)
+TargetStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+TargetStroke.Thickness = 1
+TargetStroke.Parent = TargetBox
+
+local DelayBox = Instance.new("TextBox")
+DelayBox.Parent = MainMenu
+DelayBox.Size = UDim2.new(0, 100, 0, 24)
+DelayBox.Position = UDim2.new(0.29, 0, 0.42, 0)
+DelayBox.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+DelayBox.PlaceholderText = "SPEED DELAY"
+DelayBox.Text = "0.5"
+DelayBox.TextColor3 = Color3.fromRGB(255, 0, 0)
+DelayBox.TextSize = 11
+DelayBox.Font = Enum.Font.SourceSansSemibold
+
+local DelayStroke = Instance.new("UIStroke")
+DelayStroke.Color = Color3.fromRGB(255, 0, 0)
+DelayStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+DelayStroke.Thickness = 1
+DelayStroke.Parent = DelayBox
+
+----------------------------------------------------------------
+-- PATTERN STRIP SECTION
+----------------------------------------------------------------
+local PatternFrame = Instance.new("Frame")
+PatternFrame.Parent = MainMenu
+PatternFrame.Size = UDim2.new(0.9, 0, 0, 24)
+PatternFrame.Position = UDim2.new(0.05, 0, 0.55, 0)
+PatternFrame.BackgroundTransparency = 1
+
+local PatternLayout = Instance.new("UIListLayout")
+PatternLayout.Parent = PatternFrame
+PatternLayout.FillDirection = Enum.FillDirection.Horizontal
+PatternLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+PatternLayout.SortOrder = Enum.SortOrder.LayoutOrder
+PatternLayout.Padding = UDim.new(0, 3)
+
+local patternsList = {"@@", "__", "~~", "``", "++", "ALL"}
+local patternButtons = {}
+
+local function resetPatternBtnVisuals()
+    for _, btn in ipairs(patternButtons) do
+        btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        btn.TextColor3 = Color3.fromRGB(180, 180, 180)
+    end
+end
+
+for i, patName in ipairs(patternsList) do
+    local PatBtn = Instance.new("TextButton")
+    PatBtn.Parent = PatternFrame
+    PatBtn.Size = UDim2.new(0, 32, 1, 0)
+    PatBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    PatBtn.Text = patName
+    PatBtn.TextColor3 = Color3.fromRGB(180, 180, 180)
+    PatBtn.TextSize = 10
+    PatBtn.Font = Enum.Font.GothamBold
+    
+    local PatStroke = Instance.new("UIStroke")
+    PatStroke.Color = Color3.fromRGB(255, 0, 0)
+    PatStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    PatStroke.Parent = PatBtn
+    
+    table.insert(patternButtons, PatBtn)
+    
+    if patName == "ALL" then
+        PatBtn.BackgroundColor3 = Color3.fromRGB(180, 0, 0)
+        PatBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    end
+
+    PatBtn.MouseButton1Click:Connect(function()
+        playTapSound()
+        resetPatternBtnVisuals()
+        PatBtn.BackgroundColor3 = Color3.fromRGB(180, 0, 0)
+        PatBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        if patName == "ALL" then
+            CurrentPatternPool = {"__", "~~", "``", "@@", "++"}
+        else
+            CurrentPatternPool = {patName}
+        end
+    end)
+end
+
+----------------------------------------------------------------
+-- SPAM RUNNER ENGINE CORE
+----------------------------------------------------------------
+local StartBtn = Instance.new("TextButton")
+StartBtn.Parent = MainMenu
+StartBtn.Size = UDim2.new(0, 150, 0, 32)
+StartBtn.Position = UDim2.new(0.18, 0, 0.72, 0)
+StartBtn.Font = Enum.Font.GothamBold
+StartBtn.TextSize = 12
+StartBtn.Text = "🔴 START SPAM"
+StartBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+StartBtn.TextColor3 = Color3.fromRGB(255, 0, 0)
+
+local StartBtnStroke = Instance.new("UIStroke")
+StartBtnStroke.Color = Color3.fromRGB(255, 0, 0)
+StartBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+StartBtnStroke.Parent = StartBtn
+
+local isSpamming = false
+
+local function executeChat(msg)
+    if TextChatService.ChatVersion == Enum.ChatVersion.TextChatService then
+        local targetChannel = TextChatService.TextChannels:FindFirstChild("RBXGeneral")
+        if targetChannel then targetChannel:SendAsync(msg) end
+    else
+        local chatEvent = ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents") and ReplicatedStorage.DefaultChatSystemChatEvents:FindFirstChild("SayMessageRequest")
+        if chatEvent then chatEvent:FireServer(msg, "All") end
+    end
+end
+
+local function generatePatternString(patternUnit, maxLen)
+    local result = ""
+    local unitLen = string.len(patternUnit)
+    if unitLen == 0 then return "" end
+    while (string.len(result) + unitLen) <= maxLen do
+        result = result .. patternUnit
+    end
+    return result
+end
+
+local function buildSpamString(sender, target, rawWord, patternUnit)
+    local prefix = "SCRIPT BY " .. sender .. " "
+    local suffix = " " .. target .. " TMX MI " .. rawWord
+    local staticLength = string.len(prefix) + string.len(suffix)
+    local maxAllowedPatternLength = 195 - staticLength
+    if maxAllowedPatternLength < 0 then
+        return string.sub(prefix .. suffix, 1, 195)
+    end
+    local dynamicPattern = generatePatternString(patternUnit, maxAllowedPatternLength)
+    return string.sub(prefix .. dynamicPattern .. suffix, 1, 195)
+end
+
+StartBtn.MouseButton1Click:Connect(function()
+    playTapSound()
+    isSpamming = not isSpamming
+    if isSpamming then
+        StartBtn.Text = "🟢 STOP SPAM"
+        StartBtn.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+        StartBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
+        task.spawn(function()
+            while isSpamming do
+                local senderName = SenderBox.Text ~= "" and SenderBox.Text or "FANG"
+                local targetName = TargetBox.Text ~= "" and TargetBox.Text or "NOOB"
+                local speed = tonumber(DelayBox.Text) or 0.5
+                local selectedWord = SpamWords[math.random(1, #SpamWords)]
+                local selectedPattern = CurrentPatternPool[math.random(1, #CurrentPatternPool)]
+                local processedPayload = buildSpamString(senderName, targetName, selectedWord, selectedPattern)
+                executeChat(processedPayload)
+                task.wait(speed)
+            end
+        end)
+    else
+        StartBtn.Text = "🔴 START SPAM"
+        StartBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        StartBtn.TextColor3 = Color3.fromRGB(255, 0, 0)
+    end
+end)
+
+----------------------------------------------------------------
+-- TOGGLE TRIGGERS ENGINE
+----------------------------------------------------------------
+ToggleBtn.MouseButton1Click:Connect(function()
+    playTapSound()
+    MainMenu.Visible = not MainMenu.Visible
+end)
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    if input.KeyCode == Enum.KeyCode.F then
+        MainMenu.Visible = not MainMenu.Visible
+    end
+end)
+
+print("🔥 EA_FANG SPAMMER INTEGRATED LIBRARY LOADED SUCCESSFULLY!")
