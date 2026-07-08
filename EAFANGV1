@@ -319,7 +319,7 @@ local BenxTarget_Button = Instance.new("TextButton")
 local PushTarget_Button = Instance.new("TextButton")
 local WhitelistTarget_Button = Instance.new("TextButton")
 local TeleportTarget_Button = Instance.new("TextButton")
-local BlowjobTarget_Button = Instance.new("TextButton")  -- Renamed from Headsit
+local FrontHeadsit_Button = Instance.new("TextButton")  -- Renamed to Front Headsit
 local StandTarget_Button = Instance.new("TextButton")
 local BackpackTarget_Button = Instance.new("TextButton")
 local DoggyTarget_Button = Instance.new("TextButton")
@@ -1288,20 +1288,20 @@ TeleportTarget_Button.TextScaled = true
 TeleportTarget_Button.TextSize = 14.000
 TeleportTarget_Button.TextWrapped = true
 
-BlowjobTarget_Button.Name = "BlowjobTarget_Button"
-BlowjobTarget_Button.Parent = Target_Section
-BlowjobTarget_Button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-BlowjobTarget_Button.BackgroundTransparency = 0.500
-BlowjobTarget_Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
-BlowjobTarget_Button.BorderSizePixel = 0
-BlowjobTarget_Button.Position = UDim2.new(0, 25, 0, 300)
-BlowjobTarget_Button.Size = UDim2.new(0, 150, 0, 30)
-BlowjobTarget_Button.Font = Enum.Font.Oswald
-BlowjobTarget_Button.Text = "Blowjob"
-BlowjobTarget_Button.TextColor3 = Color3.fromRGB(0, 0, 0)
-BlowjobTarget_Button.TextScaled = true
-BlowjobTarget_Button.TextSize = 14.000
-BlowjobTarget_Button.TextWrapped = true
+FrontHeadsit_Button.Name = "FrontHeadsit_Button"
+FrontHeadsit_Button.Parent = Target_Section
+FrontHeadsit_Button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+FrontHeadsit_Button.BackgroundTransparency = 0.500
+FrontHeadsit_Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
+FrontHeadsit_Button.BorderSizePixel = 0
+FrontHeadsit_Button.Position = UDim2.new(0, 25, 0, 300)
+FrontHeadsit_Button.Size = UDim2.new(0, 150, 0, 30)
+FrontHeadsit_Button.Font = Enum.Font.Oswald
+FrontHeadsit_Button.Text = "Front Headsit"
+FrontHeadsit_Button.TextColor3 = Color3.fromRGB(0, 0, 0)
+FrontHeadsit_Button.TextScaled = true
+FrontHeadsit_Button.TextSize = 14.000
+FrontHeadsit_Button.TextWrapped = true
 
 StandTarget_Button.Name = "StandTarget_Button"
 StandTarget_Button.Parent = Target_Section
@@ -1811,7 +1811,7 @@ CreateToggle(ESPTarget_Button)
 CreateToggle(CopyAnim_Button)
 CreateToggle(ChatSync_Button)
 CreateToggle(BenxTarget_Button)
-CreateToggle(BlowjobTarget_Button)
+CreateToggle(FrontHeadsit_Button)
 CreateToggle(StandTarget_Button)
 CreateToggle(BackpackTarget_Button)
 CreateToggle(DoggyTarget_Button)
@@ -1880,7 +1880,7 @@ local function UpdateTarget(player)
         CopyAnim_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0)
         ChatSync_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0)
         BenxTarget_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0)
-        BlowjobTarget_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0)
+        FrontHeadsit_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0)
         StandTarget_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0)
         BackpackTarget_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0)
         DoggyTarget_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0)
@@ -1907,12 +1907,13 @@ local function ToggleFling(bool)
     end)
 end
 
--- Enhanced sticky attachment - no collision, full stick, server-side 0 delay
-local function StickyAttach(target, offset, animId, sit)
+-- Ultra Strong Sticky - target void me jaye to bhi chipka rahega bina mare
+local function UltraStickyAttach(target, offset, animId, sit, bob)
     local con
     local vel
     local animTrack
     local attached = true
+    local tickTime = 0
     local function stopAttach()
         attached = false
         if con then con:Disconnect(); con = nil end
@@ -1927,6 +1928,13 @@ local function StickyAttach(target, offset, animId, sit)
                 part.CanCollide = true
             end
         end
+        -- Remove any body velocity that might be left
+        if GetRoot(plr):FindFirstChild("UltraStickyVel") then
+            GetRoot(plr).UltraStickyVel:Destroy()
+        end
+        if GetRoot(plr):FindFirstChild("UltraStickyGyro") then
+            GetRoot(plr).UltraStickyGyro:Destroy()
+        end
     end
     if animId then
         PlayAnim(animId, 0, 1)
@@ -1934,17 +1942,35 @@ local function StickyAttach(target, offset, animId, sit)
     if sit then
         plr.Character.Humanoid.Sit = true
     end
+    -- Disable collision and make massless
     for _, part in pairs(plr.Character:GetDescendants()) do
         if part:IsA("BasePart") then
             part.CanCollide = false
+            part.Massless = true
         end
     end
-    if not GetRoot(plr):FindFirstChild("BreakVelocity") then
-        pcall(function()
-            local TempV = Velocity_Asset:Clone()
-            TempV.Parent = GetRoot(plr)
-        end)
+    -- Add body velocity for ultra stick
+    local bodyVel = Instance.new("BodyVelocity")
+    bodyVel.Name = "UltraStickyVel"
+    bodyVel.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+    bodyVel.Velocity = Vector3.new(0,0,0)
+    bodyVel.Parent = GetRoot(plr)
+    
+    local bodyGyro = Instance.new("BodyGyro")
+    bodyGyro.Name = "UltraStickyGyro"
+    bodyGyro.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+    bodyGyro.P = 100000
+    bodyGyro.D = 5000
+    bodyGyro.Parent = GetRoot(plr)
+    
+    -- God mode for player
+    local hum = plr.Character:FindFirstChildOfClass("Humanoid")
+    if hum then
+        hum.MaxHealth = math.huge
+        hum.Health = math.huge
+        hum:SetStateEnabled(Enum.HumanoidStateType.Dead, false)
     end
+    
     con = RunService.Heartbeat:Connect(function()
         if not attached or not target or not target.Character or not target.Character:FindFirstChild("HumanoidRootPart") then
             stopAttach()
@@ -1952,8 +1978,22 @@ local function StickyAttach(target, offset, animId, sit)
         end
         local root = GetRoot(target)
         if root then
-            GetRoot(plr).CFrame = root.CFrame * offset
-            GetRoot(plr).Velocity = Vector3.new(0,0,0)
+            local myRoot = GetRoot(plr)
+            local targetCF = root.CFrame * offset
+            if bob then
+                tickTime = tickTime + 0.04
+                local bobOffset = math.sin(tickTime * 10) * 0.05
+                targetCF = targetCF * CFrame.new(0, bobOffset, 0)
+            end
+            myRoot.CFrame = targetCF
+            myRoot.Velocity = Vector3.new(0,0,0)
+            bodyVel.Velocity = Vector3.new(0,0,0)
+            bodyGyro.CFrame = targetCF
+        end
+        -- Keep god mode active
+        if hum then
+            hum.Health = math.huge
+            hum:SetStateEnabled(Enum.HumanoidStateType.Dead, false)
         end
     end)
     return stopAttach
@@ -2713,7 +2753,7 @@ TextChatService.MessageReceived:Connect(function(m)
     end
 end)
 
--- Bang (BenxTarget) - Animation 507777268 with sticky
+-- Bang (BenxTarget) - Animation 507777268 with ultra sticky
 local benxStopper = nil
 BenxTarget_Button.MouseButton1Click:Connect(function()
     if TargetedPlayer == nil then
@@ -2723,10 +2763,11 @@ BenxTarget_Button.MouseButton1Click:Connect(function()
     ChangeToggleColor(BenxTarget_Button)
     if BenxTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
         if benxStopper then benxStopper() end
-        benxStopper = StickyAttach(
+        benxStopper = UltraStickyAttach(
             Players[TargetedPlayer],
             CFrame.new(0,0,1.1),
             "507777268",
+            false,
             false
         )
     else
@@ -2735,65 +2776,55 @@ BenxTarget_Button.MouseButton1Click:Connect(function()
         if GetRoot(plr):FindFirstChild("BreakVelocity") then
             GetRoot(plr).BreakVelocity:Destroy()
         end
+        if GetRoot(plr):FindFirstChild("UltraStickyVel") then
+            GetRoot(plr).UltraStickyVel:Destroy()
+        end
+        if GetRoot(plr):FindFirstChild("UltraStickyGyro") then
+            GetRoot(plr).UltraStickyGyro:Destroy()
+        end
+        local hum = plr.Character:FindFirstChildOfClass("Humanoid")
+        if hum then
+            hum.MaxHealth = 100
+            hum.Health = 100
+            hum:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
+        end
     end
 end)
 
--- Blowjob (formerly Headsit) - face forward, use target head orientation
-local blowjobStopper = nil
-BlowjobTarget_Button.MouseButton1Click:Connect(function()
+-- Front Headsit - Ultra strong with bob animation
+local frontHeadsitStopper = nil
+FrontHeadsit_Button.MouseButton1Click:Connect(function()
     if TargetedPlayer == nil then
         SendNotify("Eᴀ_FᴀɴɢV1","Select a target first!",5)
         return
     end
-    ChangeToggleColor(BlowjobTarget_Button)
-    if BlowjobTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
-        if blowjobStopper then blowjobStopper() end
-        local con
-        local attached = true
-        local function stopBlowjob()
-            attached = false
-            if con then con:Disconnect(); con = nil end
-            plr.Character.Humanoid.Sit = false
-            if GetRoot(plr):FindFirstChild("BreakVelocity") then
-                GetRoot(plr).BreakVelocity:Destroy()
-            end
-            for _, part in pairs(plr.Character:GetDescendants()) do
-                if part:IsA("BasePart") then
-                    part.CanCollide = true
-                end
-            end
-        end
-        PlayAnim("507772104", 0, 1)
-        plr.Character.Humanoid.Sit = true
-        for _, part in pairs(plr.Character:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.CanCollide = false
-            end
-        end
-        if not GetRoot(plr):FindFirstChild("BreakVelocity") then
-            pcall(function()
-                local TempV = Velocity_Asset:Clone()
-                TempV.Parent = GetRoot(plr)
-            end)
-        end
-        con = RunService.Heartbeat:Connect(function()
-            if not attached or not Players[TargetedPlayer] or not Players[TargetedPlayer].Character or not Players[TargetedPlayer].Character:FindFirstChild("Head") then
-                stopBlowjob()
-                return
-            end
-            local head = Players[TargetedPlayer].Character.Head
-            if head then
-                -- Face forward using head orientation, position in front of face
-                GetRoot(plr).CFrame = head.CFrame * CFrame.new(0, 0.5, 2.5)
-                GetRoot(plr).Velocity = Vector3.new(0,0,0)
-            end
-        end)
-        blowjobStopper = stopBlowjob
+    ChangeToggleColor(FrontHeadsit_Button)
+    if FrontHeadsit_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
+        if frontHeadsitStopper then frontHeadsitStopper() end
+        frontHeadsitStopper = UltraStickyAttach(
+            Players[TargetedPlayer],
+            CFrame.new(0, 0.45, -0.5) * CFrame.Angles(0, math.pi, 0),
+            "507772104",
+            true,
+            true  -- bob enabled
+        )
     else
-        if blowjobStopper then blowjobStopper(); blowjobStopper = nil end
+        if frontHeadsitStopper then frontHeadsitStopper(); frontHeadsitStopper = nil end
         plr.Character.Humanoid.Sit = false
         if GetRoot(plr):FindFirstChild("BreakVelocity") then
             GetRoot(plr).BreakVelocity:Destroy()
+        end
+        if GetRoot(plr):FindFirstChild("UltraStickyVel") then
+            GetRoot(plr).UltraStickyVel:Destroy()
+        end
+        if GetRoot(plr):FindFirstChild("UltraStickyGyro") then
+            GetRoot(plr).UltraStickyGyro:Destroy()
+        end
+        local hum = plr.Character:FindFirstChildOfClass("Humanoid")
+        if hum then
+            hum.MaxHealth = 100
+            hum.Health = 100
+            hum:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
         end
     end
 end)
@@ -2808,10 +2839,11 @@ StandTarget_Button.MouseButton1Click:Connect(function()
     ChangeToggleColor(StandTarget_Button)
     if StandTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
         if standStopper then standStopper() end
-        standStopper = StickyAttach(
+        standStopper = UltraStickyAttach(
             Players[TargetedPlayer],
             CFrame.new(-3,1,0),
             nil,
+            false,
             false
         )
         PlayAnim("13823324057",4,0)
@@ -2820,6 +2852,18 @@ StandTarget_Button.MouseButton1Click:Connect(function()
         StopAnim()
         if GetRoot(plr):FindFirstChild("BreakVelocity") then
             GetRoot(plr).BreakVelocity:Destroy()
+        end
+        if GetRoot(plr):FindFirstChild("UltraStickyVel") then
+            GetRoot(plr).UltraStickyVel:Destroy()
+        end
+        if GetRoot(plr):FindFirstChild("UltraStickyGyro") then
+            GetRoot(plr).UltraStickyGyro:Destroy()
+        end
+        local hum = plr.Character:FindFirstChildOfClass("Humanoid")
+        if hum then
+            hum.MaxHealth = 100
+            hum.Health = 100
+            hum:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
         end
     end
 end)
@@ -2834,11 +2878,12 @@ BackpackTarget_Button.MouseButton1Click:Connect(function()
     ChangeToggleColor(BackpackTarget_Button)
     if BackpackTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
         if backpackStopper then backpackStopper() end
-        backpackStopper = StickyAttach(
+        backpackStopper = UltraStickyAttach(
             Players[TargetedPlayer],
             CFrame.new(0,0,1.2) * CFrame.Angles(0,-3,0),
             nil,
-            true
+            true,
+            false
         )
     else
         if backpackStopper then backpackStopper(); backpackStopper = nil end
@@ -2846,10 +2891,22 @@ BackpackTarget_Button.MouseButton1Click:Connect(function()
         if GetRoot(plr):FindFirstChild("BreakVelocity") then
             GetRoot(plr).BreakVelocity:Destroy()
         end
+        if GetRoot(plr):FindFirstChild("UltraStickyVel") then
+            GetRoot(plr).UltraStickyVel:Destroy()
+        end
+        if GetRoot(plr):FindFirstChild("UltraStickyGyro") then
+            GetRoot(plr).UltraStickyGyro:Destroy()
+        end
+        local hum = plr.Character:FindFirstChildOfClass("Humanoid")
+        if hum then
+            hum.MaxHealth = 100
+            hum.Health = 100
+            hum:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
+        end
     end
 end)
 
--- Doggy - Fixed: use LowerTorso with proper orientation
+-- Doggy
 local doggyStopper = nil
 DoggyTarget_Button.MouseButton1Click:Connect(function()
     if TargetedPlayer == nil then
@@ -2867,25 +2924,53 @@ DoggyTarget_Button.MouseButton1Click:Connect(function()
             if GetRoot(plr):FindFirstChild("BreakVelocity") then
                 GetRoot(plr).BreakVelocity:Destroy()
             end
+            if GetRoot(plr):FindFirstChild("UltraStickyVel") then
+                GetRoot(plr).UltraStickyVel:Destroy()
+            end
+            if GetRoot(plr):FindFirstChild("UltraStickyGyro") then
+                GetRoot(plr).UltraStickyGyro:Destroy()
+            end
             StopAnim()
             for _, part in pairs(plr.Character:GetDescendants()) do
                 if part:IsA("BasePart") then
                     part.CanCollide = true
+                    part.Massless = false
                 end
+            end
+            local hum = plr.Character:FindFirstChildOfClass("Humanoid")
+            if hum then
+                hum.MaxHealth = 100
+                hum.Health = 100
+                hum:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
             end
         end
         PlayAnim("13694096724",3.4,0)
         for _, part in pairs(plr.Character:GetDescendants()) do
             if part:IsA("BasePart") then
                 part.CanCollide = false
+                part.Massless = true
             end
         end
-        if not GetRoot(plr):FindFirstChild("BreakVelocity") then
-            pcall(function()
-                local TempV = Velocity_Asset:Clone()
-                TempV.Parent = GetRoot(plr)
-            end)
+        local bodyVel = Instance.new("BodyVelocity")
+        bodyVel.Name = "UltraStickyVel"
+        bodyVel.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+        bodyVel.Velocity = Vector3.new(0,0,0)
+        bodyVel.Parent = GetRoot(plr)
+        
+        local bodyGyro = Instance.new("BodyGyro")
+        bodyGyro.Name = "UltraStickyGyro"
+        bodyGyro.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+        bodyGyro.P = 100000
+        bodyGyro.D = 5000
+        bodyGyro.Parent = GetRoot(plr)
+        
+        local hum = plr.Character:FindFirstChildOfClass("Humanoid")
+        if hum then
+            hum.MaxHealth = math.huge
+            hum.Health = math.huge
+            hum:SetStateEnabled(Enum.HumanoidStateType.Dead, false)
         end
+        
         con = RunService.Heartbeat:Connect(function()
             if not attached or not Players[TargetedPlayer] or not Players[TargetedPlayer].Character or not Players[TargetedPlayer].Character:FindFirstChild("LowerTorso") then
                 stopDoggy()
@@ -2893,8 +2978,12 @@ DoggyTarget_Button.MouseButton1Click:Connect(function()
             end
             local root = Players[TargetedPlayer].Character.LowerTorso
             if root then
-                GetRoot(plr).CFrame = root.CFrame * CFrame.new(0, 0.23, 0)
-                GetRoot(plr).Velocity = Vector3.new(0,0,0)
+                local myRoot = GetRoot(plr)
+                myRoot.CFrame = root.CFrame * CFrame.new(0, 0.23, 0)
+                myRoot.Velocity = Vector3.new(0,0,0)
+                bodyVel.Velocity = Vector3.new(0,0,0)
+                bodyGyro.CFrame = root.CFrame
+                if hum then hum.Health = math.huge end
             end
         end)
         doggyStopper = stopDoggy
@@ -2903,7 +2992,19 @@ DoggyTarget_Button.MouseButton1Click:Connect(function()
         if GetRoot(plr):FindFirstChild("BreakVelocity") then
             GetRoot(plr).BreakVelocity:Destroy()
         end
+        if GetRoot(plr):FindFirstChild("UltraStickyVel") then
+            GetRoot(plr).UltraStickyVel:Destroy()
+        end
+        if GetRoot(plr):FindFirstChild("UltraStickyGyro") then
+            GetRoot(plr).UltraStickyGyro:Destroy()
+        end
         StopAnim()
+        local hum = plr.Character:FindFirstChildOfClass("Humanoid")
+        if hum then
+            hum.MaxHealth = 100
+            hum.Health = 100
+            hum:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
+        end
     end
 end)
 
@@ -2925,25 +3026,53 @@ DragTarget_Button.MouseButton1Click:Connect(function()
             if GetRoot(plr):FindFirstChild("BreakVelocity") then
                 GetRoot(plr).BreakVelocity:Destroy()
             end
+            if GetRoot(plr):FindFirstChild("UltraStickyVel") then
+                GetRoot(plr).UltraStickyVel:Destroy()
+            end
+            if GetRoot(plr):FindFirstChild("UltraStickyGyro") then
+                GetRoot(plr).UltraStickyGyro:Destroy()
+            end
             StopAnim()
             for _, part in pairs(plr.Character:GetDescendants()) do
                 if part:IsA("BasePart") then
                     part.CanCollide = true
+                    part.Massless = false
                 end
+            end
+            local hum = plr.Character:FindFirstChildOfClass("Humanoid")
+            if hum then
+                hum.MaxHealth = 100
+                hum.Health = 100
+                hum:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
             end
         end
         PlayAnim("10714360343",0.5,0)
         for _, part in pairs(plr.Character:GetDescendants()) do
             if part:IsA("BasePart") then
                 part.CanCollide = false
+                part.Massless = true
             end
         end
-        if not GetRoot(plr):FindFirstChild("BreakVelocity") then
-            pcall(function()
-                local TempV = Velocity_Asset:Clone()
-                TempV.Parent = GetRoot(plr)
-            end)
+        local bodyVel = Instance.new("BodyVelocity")
+        bodyVel.Name = "UltraStickyVel"
+        bodyVel.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+        bodyVel.Velocity = Vector3.new(0,0,0)
+        bodyVel.Parent = GetRoot(plr)
+        
+        local bodyGyro = Instance.new("BodyGyro")
+        bodyGyro.Name = "UltraStickyGyro"
+        bodyGyro.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+        bodyGyro.P = 100000
+        bodyGyro.D = 5000
+        bodyGyro.Parent = GetRoot(plr)
+        
+        local hum = plr.Character:FindFirstChildOfClass("Humanoid")
+        if hum then
+            hum.MaxHealth = math.huge
+            hum.Health = math.huge
+            hum:SetStateEnabled(Enum.HumanoidStateType.Dead, false)
         end
+        
         con = RunService.Heartbeat:Connect(function()
             if not attached or not Players[TargetedPlayer] or not Players[TargetedPlayer].Character or not Players[TargetedPlayer].Character:FindFirstChild("RightHand") then
                 stopDrag()
@@ -2951,8 +3080,12 @@ DragTarget_Button.MouseButton1Click:Connect(function()
             end
             local root = Players[TargetedPlayer].Character.RightHand
             if root then
-                GetRoot(plr).CFrame = root.CFrame * CFrame.new(0,-2.5,1) * CFrame.Angles(-2,-3,0)
-                GetRoot(plr).Velocity = Vector3.new(0,0,0)
+                local myRoot = GetRoot(plr)
+                myRoot.CFrame = root.CFrame * CFrame.new(0,-2.5,1) * CFrame.Angles(-2,-3,0)
+                myRoot.Velocity = Vector3.new(0,0,0)
+                bodyVel.Velocity = Vector3.new(0,0,0)
+                bodyGyro.CFrame = root.CFrame
+                if hum then hum.Health = math.huge end
             end
         end)
         dragStopper = stopDrag
@@ -2961,7 +3094,19 @@ DragTarget_Button.MouseButton1Click:Connect(function()
         if GetRoot(plr):FindFirstChild("BreakVelocity") then
             GetRoot(plr).BreakVelocity:Destroy()
         end
+        if GetRoot(plr):FindFirstChild("UltraStickyVel") then
+            GetRoot(plr).UltraStickyVel:Destroy()
+        end
+        if GetRoot(plr):FindFirstChild("UltraStickyGyro") then
+            GetRoot(plr).UltraStickyGyro:Destroy()
+        end
         StopAnim()
+        local hum = plr.Character:FindFirstChildOfClass("Humanoid")
+        if hum then
+            hum.MaxHealth = 100
+            hum.Health = 100
+            hum:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
+        end
     end
 end)
 
@@ -3325,7 +3470,7 @@ plr.CharacterAdded:Connect(function(x)
     if espBillboard then espBillboard:Destroy(); espBillboard = nil end
     ESPTarget_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0)
     if benxStopper then benxStopper(); benxStopper = nil; BenxTarget_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0) end
-    if blowjobStopper then blowjobStopper(); blowjobStopper = nil; BlowjobTarget_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0) end
+    if frontHeadsitStopper then frontHeadsitStopper(); frontHeadsitStopper = nil; FrontHeadsit_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0) end
     if standStopper then standStopper(); standStopper = nil; StandTarget_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0) end
     if backpackStopper then backpackStopper(); backpackStopper = nil; BackpackTarget_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0) end
     if doggyStopper then doggyStopper(); doggyStopper = nil; DoggyTarget_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0) end
