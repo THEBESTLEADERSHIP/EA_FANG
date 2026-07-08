@@ -2543,7 +2543,11 @@ ViewTarget_Button.MouseButton1Click:Connect(function()
     end
 end)
 
--- Focus Target (Keep camera locked)
+-- Focus Target: Camera + character always face target
+local focusConn = nil
+local focusCamConn = nil
+local focusBodyGyro = nil
+
 FocusTarget_Button.MouseButton1Click:Connect(function()
     if TargetedPlayer == nil then
         SendNotify("Eᴀ_FᴀɴɢV1","Select a target first!",5)
@@ -2551,16 +2555,42 @@ FocusTarget_Button.MouseButton1Click:Connect(function()
     end
     ChangeToggleColor(FocusTarget_Button)
     if FocusTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
-        repeat
+        -- Camera lock
+        focusCamConn = RunService.Heartbeat:Connect(function()
             pcall(function()
                 local t = Players[TargetedPlayer]
                 if t and t.Character and t.Character:FindFirstChild("Humanoid") then
                     game.Workspace.CurrentCamera.CameraSubject = t.Character.Humanoid
                 end
             end)
-            task.wait()
-        until FocusTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(255,0,0)
+        end)
+        -- Body face target
+        focusConn = RunService.Heartbeat:Connect(function()
+            pcall(function()
+                local t = Players[TargetedPlayer]
+                if t and t.Character and t.Character:FindFirstChild("HumanoidRootPart") then
+                    local myRoot = GetRoot(plr)
+                    local targetRoot = GetRoot(t)
+                    if myRoot and targetRoot then
+                        if not focusBodyGyro then
+                            focusBodyGyro = Instance.new("BodyGyro")
+                            focusBodyGyro.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+                            focusBodyGyro.P = 10000
+                            focusBodyGyro.D = 500
+                            focusBodyGyro.Parent = myRoot
+                        end
+                        focusBodyGyro.CFrame = CFrame.lookAt(myRoot.Position, targetRoot.Position)
+                    end
+                end
+            end)
+        end)
+        SendNotify("Eᴀ_FᴀɴɢV1","Focus ON (Camera + Body)",3)
+    else
+        if focusConn then focusConn:Disconnect(); focusConn = nil end
+        if focusCamConn then focusCamConn:Disconnect(); focusCamConn = nil end
+        if focusBodyGyro then focusBodyGyro:Destroy(); focusBodyGyro = nil end
         game.Workspace.CurrentCamera.CameraSubject = plr.Character.Humanoid
+        SendNotify("Eᴀ_FᴀɴɢV1","Focus OFF",3)
     end
 end)
 
@@ -2702,7 +2732,7 @@ BenxTarget_Button.MouseButton1Click:Connect(function()
     end
 end)
 
--- Headsit - emote 507772104, face side (offset adjusted)
+-- Headsit - improved angle: face forward (same direction as target's head)
 local headsitStopper = nil
 HeadsitTarget_Button.MouseButton1Click:Connect(function()
     if TargetedPlayer == nil then
@@ -2712,12 +2742,48 @@ HeadsitTarget_Button.MouseButton1Click:Connect(function()
     ChangeToggleColor(HeadsitTarget_Button)
     if HeadsitTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
         if headsitStopper then headsitStopper() end
-        headsitStopper = StickyAttach(
-            Players[TargetedPlayer],
-            CFrame.new(0, 2.3, 1.2),
-            "507772104",
-            true
-        )
+        -- use head CFrame with offset and inherit orientation (face forward)
+        local con
+        local attached = true
+        local function stopHeadsit()
+            attached = false
+            if con then con:Disconnect(); con = nil end
+            plr.Character.Humanoid.Sit = false
+            if GetRoot(plr):FindFirstChild("BreakVelocity") then
+                GetRoot(plr).BreakVelocity:Destroy()
+            end
+            for _, part in pairs(plr.Character:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = true
+                end
+            end
+        end
+        PlayAnim("507772104", 0, 1)
+        plr.Character.Humanoid.Sit = true
+        for _, part in pairs(plr.Character:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = false
+            end
+        end
+        if not GetRoot(plr):FindFirstChild("BreakVelocity") then
+            pcall(function()
+                local TempV = Velocity_Asset:Clone()
+                TempV.Parent = GetRoot(plr)
+            end)
+        end
+        con = RunService.Heartbeat:Connect(function()
+            if not attached or not Players[TargetedPlayer] or not Players[TargetedPlayer].Character or not Players[TargetedPlayer].Character:FindFirstChild("Head") then
+                stopHeadsit()
+                return
+            end
+            local head = Players[TargetedPlayer].Character.Head
+            if head then
+                -- Place player above head and face same direction as target (inherited from head CFrame)
+                GetRoot(plr).CFrame = head.CFrame * CFrame.new(0, 2.3, 1.2)
+                GetRoot(plr).Velocity = Vector3.new(0,0,0)
+            end
+        end)
+        headsitStopper = stopHeadsit
     else
         if headsitStopper then headsitStopper(); headsitStopper = nil end
         plr.Character.Humanoid.Sit = false
@@ -2788,7 +2854,6 @@ DoggyTarget_Button.MouseButton1Click:Connect(function()
     ChangeToggleColor(DoggyTarget_Button)
     if DoggyTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
         if doggyStopper then doggyStopper() end
-        -- Use LowerTorso for doggy
         local con
         local attached = true
         local function stopDoggy()
@@ -2798,7 +2863,6 @@ DoggyTarget_Button.MouseButton1Click:Connect(function()
                 GetRoot(plr).BreakVelocity:Destroy()
             end
             StopAnim()
-            -- restore collision
             for _, part in pairs(plr.Character:GetDescendants()) do
                 if part:IsA("BasePart") then
                     part.CanCollide = true
@@ -3247,6 +3311,13 @@ plr.CharacterAdded:Connect(function(x)
         ChatSync_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0)
         SendNotify("Eᴀ_FᴀɴɢV1","Chat Sync was disabled due to respawn",5)
     end
+    -- Focus cleanup
+    if focusConn then focusConn:Disconnect(); focusConn = nil end
+    if focusCamConn then focusCamConn:Disconnect(); focusCamConn = nil end
+    if focusBodyGyro then focusBodyGyro:Destroy(); focusBodyGyro = nil end
+    FocusTarget_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0)
+    -- ESP cleanup
+    if espHighlight then espHighlight:Destroy(); espHighlight = nil; ESPTarget_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0) end
     if benxStopper then benxStopper(); benxStopper = nil; BenxTarget_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0) end
     if headsitStopper then headsitStopper(); headsitStopper = nil; HeadsitTarget_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0) end
     if standStopper then standStopper(); standStopper = nil; StandTarget_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0) end
@@ -3258,13 +3329,6 @@ plr.CharacterAdded:Connect(function(x)
         antiVoidActive = false
         AntiVoid_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0)
         SendNotify("Eᴀ_FᴀɴɢV1","Anti Void was disabled due to respawn",5)
-    end
-    -- ESP cleanup
-    if espHighlight then espHighlight:Destroy(); espHighlight = nil; ESPTarget_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0) end
-    -- Focus cleanup
-    if FocusTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
-        FocusTarget_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0)
-        game.Workspace.CurrentCamera.CameraSubject = x.Humanoid
     end
     x.Humanoid.Died:Connect(function()
         pcall(function()
