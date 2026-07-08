@@ -315,7 +315,7 @@ PatternLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 PatternLayout.SortOrder = Enum.SortOrder.LayoutOrder
 PatternLayout.Padding = UDim.new(0, 3)
 
-local patternsList = {"@@", "__", "~~", "``", "++", "ALL"}
+local patternsList = {"@@", "__", "~~", "``", "_-", "ALL"}
 local patternButtons = {}
 
 local function resetPatternBtnVisuals()
