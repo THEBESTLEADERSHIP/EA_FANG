@@ -2,8 +2,8 @@
 	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
 ]]
 --RELOAD GUI
-if game.CoreGui:FindFirstChild("SysBroker") then
-	game:GetService("StarterGui"):SetCore("SendNotification", {Title = "System Broken",Text = "GUI Already loaded, rejoin to re-execute",Duration = 5;})
+if game.CoreGui:FindFirstChild("EA_FANGV1") then
+	game:GetService("StarterGui"):SetCore("SendNotification", {Title = "EA_FANGV1",Text = "GUI Already loaded, rejoin to re-execute",Duration = 5;})
 	return
 end
 local version = 2
@@ -263,7 +263,7 @@ local Home_Section_Button = Instance.new("TextButton")
 local Game_Section_Button = Instance.new("TextButton")
 local Character_Section_Button = Instance.new("TextButton")
 local Target_Section_Button = Instance.new("TextButton")
-local Spammer_Section_Button = Instance.new("TextButton") -- renamed from Animations
+local Spammer_Section_Button = Instance.new("TextButton")
 local Misc_Section_Button = Instance.new("TextButton")
 local Credits_Section_Button = Instance.new("TextButton")
 local Game_Section = Instance.new("ScrollingFrame")
@@ -294,7 +294,6 @@ local Home_Section = Instance.new("ScrollingFrame")
 local Profile_Image = Instance.new("ImageLabel")
 local Welcome_Label = Instance.new("TextLabel")
 local Announce_Label = Instance.new("TextLabel")
-local HomeBottomText_Label = Instance.new("TextLabel") -- new for home text
 local Character_Section = Instance.new("ScrollingFrame")
 local WalkSpeed_Button = Instance.new("TextButton")
 local WalkSpeed_Input = Instance.new("TextBox")
@@ -323,10 +322,9 @@ local StandTarget_Button = Instance.new("TextButton")
 local BackpackTarget_Button = Instance.new("TextButton")
 local DoggyTarget_Button = Instance.new("TextButton")
 local DragTarget_Button = Instance.new("TextButton")
--- Replace Animations_Section with Spammer_Section
 local Spammer_Section = Instance.new("ScrollingFrame")
-local FangCustomSpam_Button = Instance.new("TextButton") -- the button for custom spam
--- (other spam buttons can be added later)
+local FangSpam_Button = Instance.new("TextButton")
+local FangCustomSpam_Button = Instance.new("TextButton")
 local Misc_Section = Instance.new("ScrollingFrame")
 local AntiFling_Button = Instance.new("TextButton")
 local AntiChatSpy_Button = Instance.new("TextButton")
@@ -367,7 +365,7 @@ local function CreateClicker(Button)
 	NewClicker.Parent = Button
 end
 
-SysBroker.Name = "SysBroker"
+SysBroker.Name = "EA_FANGV1"
 SysBroker.Parent = game.CoreGui
 SysBroker.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
@@ -375,12 +373,12 @@ Background.Name = "Background"
 Background.Parent = SysBroker
 Background.AnchorPoint = Vector2.new(0.5, 0.5)
 Background.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-Background.BorderColor3 = Color3.fromRGB(255, 0, 0) -- red border
+Background.BorderColor3 = Color3.fromRGB(255, 0, 0)
 Background.Position = UDim2.new(0.5, 0, 0.5, 0)
 Background.Size = UDim2.new(0, 500, 0, 350)
 Background.ZIndex = 9
 Background.Image = "rbxassetid://159991693"
-Background.ImageColor3 = Color3.fromRGB(255, 0, 0) -- red tint
+Background.ImageColor3 = Color3.fromRGB(255, 0, 0)
 Background.ImageTransparency = 0.600
 Background.ScaleType = Enum.ScaleType.Tile
 Background.SliceCenter = Rect.new(0, 256, 0, 256)
@@ -396,8 +394,8 @@ TitleBarLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
 TitleBarLabel.BorderSizePixel = 0
 TitleBarLabel.Size = UDim2.new(1, 0, 0, 30)
 TitleBarLabel.Font = Enum.Font.Unknown
-TitleBarLabel.Text = "Eᴀ_FᴀɴɢV1" -- changed title
-TitleBarLabel.TextColor3 = Color3.fromRGB(255, 0, 0) -- red text
+TitleBarLabel.Text = "____/EA_FANGV1\\___"
+TitleBarLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
 TitleBarLabel.TextScaled = true
 TitleBarLabel.TextSize = 14.000
 TitleBarLabel.TextWrapped = true
@@ -414,7 +412,7 @@ SectionList.Size = UDim2.new(0, 105, 0, 320)
 
 Home_Section_Button.Name = "Home_Section_Button"
 Home_Section_Button.Parent = SectionList
-Home_Section_Button.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- red
+Home_Section_Button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 Home_Section_Button.BackgroundTransparency = 0.500
 Home_Section_Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Home_Section_Button.BorderSizePixel = 0
@@ -481,7 +479,7 @@ Spammer_Section_Button.BorderSizePixel = 0
 Spammer_Section_Button.Position = UDim2.new(0, 0, 0, 185)
 Spammer_Section_Button.Size = UDim2.new(0, 105, 0, 30)
 Spammer_Section_Button.Font = Enum.Font.Oswald
-Spammer_Section_Button.Text = "SPAMMER"
+Spammer_Section_Button.Text = "Spammer"
 Spammer_Section_Button.TextColor3 = Color3.fromRGB(0, 0, 0)
 Spammer_Section_Button.TextScaled = true
 Spammer_Section_Button.TextSize = 14.000
@@ -532,7 +530,7 @@ Game_Section.ScrollBarThickness = 5
 
 AntiRagdoll_Button.Name = "AntiRagdoll_Button"
 AntiRagdoll_Button.Parent = Game_Section
-AntiRagdoll_Button.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- red
+AntiRagdoll_Button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 AntiRagdoll_Button.BackgroundTransparency = 0.500
 AntiRagdoll_Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
 AntiRagdoll_Button.BorderSizePixel = 0
@@ -698,7 +696,7 @@ TouchFling_Button.TextWrapped = true
 CMDBar.Name = "CMDBar"
 CMDBar.Parent = Game_Section
 CMDBar.AnchorPoint = Vector2.new(0.5, 0.5)
-CMDBar.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- red bg
+CMDBar.BackgroundColor3 = Color3.fromRGB(140, 0, 0)
 CMDBar.BackgroundTransparency = 0.300
 CMDBar.BorderColor3 = Color3.fromRGB(255, 0, 0)
 CMDBar.Position = UDim2.new(0.5, 0, 0, 350)
@@ -907,7 +905,7 @@ Welcome_Label.Position = UDim2.new(0, 150, 0, 25)
 Welcome_Label.Size = UDim2.new(0, 200, 0, 100)
 Welcome_Label.Font = Enum.Font.SourceSans
 Welcome_Label.Text = ("¡Hello @"..plr.Name.."!\nPress [B] to open/close gui.")
-Welcome_Label.TextColor3 = Color3.fromRGB(255, 0, 0) -- red
+Welcome_Label.TextColor3 = Color3.fromRGB(255, 0, 0)
 Welcome_Label.TextSize = 24.000
 Welcome_Label.TextWrapped = true
 Welcome_Label.TextXAlignment = Enum.TextXAlignment.Left
@@ -919,30 +917,14 @@ Announce_Label.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 Announce_Label.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Announce_Label.BorderSizePixel = 0
 Announce_Label.Position = UDim2.new(0, 25, 0, 150)
-Announce_Label.Size = UDim2.new(0, 350, 0, 50)
+Announce_Label.Size = UDim2.new(0, 350, 0, 150)
 Announce_Label.Font = Enum.Font.SourceSans
-Announce_Label.Text = "open source - some features may not work because i deleted Github repo"
-Announce_Label.TextColor3 = Color3.fromRGB(255, 0, 0) -- red
-Announce_Label.TextSize = 18.000
+Announce_Label.Text = "Gᴜʏs !!\nMᴇ Fᴀɴɢ 💢\nYᴇ sᴄʀɪᴘᴛ ᴛᴀʙ ᴛᴀᴋ ᴜsᴇ ᴋᴀʀᴏ ᴊᴀʙ ᴛᴀᴋ Eɴᴅʟᴇss Aᴜʀᴀ ᴜᴘᴅᴀᴛᴇ ɴᴀ ʜᴏ\nPᴏᴡᴇʀᴇᴅ Bʏ » Eɴᴅʟᴇss Aᴜʀᴀ💢"
+Announce_Label.TextColor3 = Color3.fromRGB(255, 0, 0)
+Announce_Label.TextSize = 24.000
 Announce_Label.TextWrapped = true
 Announce_Label.TextXAlignment = Enum.TextXAlignment.Left
 Announce_Label.TextYAlignment = Enum.TextYAlignment.Top
-
--- New Home bottom text
-HomeBottomText_Label.Name = "HomeBottomText_Label"
-HomeBottomText_Label.Parent = Home_Section
-HomeBottomText_Label.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-HomeBottomText_Label.BorderColor3 = Color3.fromRGB(0, 0, 0)
-HomeBottomText_Label.BorderSizePixel = 0
-HomeBottomText_Label.Position = UDim2.new(0, 25, 0, 210)
-HomeBottomText_Label.Size = UDim2.new(0, 350, 0, 100)
-HomeBottomText_Label.Font = Enum.Font.SourceSans
-HomeBottomText_Label.Text = "Gᴜʏs !!\nMᴇ Fᴀɴɢ 💢\nYᴇ sᴄʀɪᴘᴛ ᴛᴀʙ ᴛᴀᴋ ᴜsᴇ ᴋᴀʀᴏ ᴊᴀʙ ᴛᴀᴋ Eɴᴅʟᴇss Aᴜʀᴀ ᴜᴘᴅᴀᴛᴇ ɴᴀ ʜᴏ\nPᴏᴡᴇʀᴇᴅ Bʏ » Eɴᴅʟᴇss Aᴜʀᴀ💢"
-HomeBottomText_Label.TextColor3 = Color3.fromRGB(255, 0, 0) -- red
-HomeBottomText_Label.TextSize = 16.000
-HomeBottomText_Label.TextWrapped = true
-HomeBottomText_Label.TextXAlignment = Enum.TextXAlignment.Left
-HomeBottomText_Label.TextYAlignment = Enum.TextYAlignment.Top
 
 Character_Section.Name = "Character_Section"
 Character_Section.Parent = Background
@@ -974,7 +956,7 @@ WalkSpeed_Button.TextWrapped = true
 
 WalkSpeed_Input.Name = "WalkSpeed_Input"
 WalkSpeed_Input.Parent = Character_Section
-WalkSpeed_Input.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+WalkSpeed_Input.BackgroundColor3 = Color3.fromRGB(140, 0, 0)
 WalkSpeed_Input.BackgroundTransparency = 0.300
 WalkSpeed_Input.BorderColor3 = Color3.fromRGB(255, 0, 0)
 WalkSpeed_Input.Position = UDim2.new(0, 210, 0, 25)
@@ -1004,7 +986,7 @@ ClearCheckpoint_Button.TextWrapped = true
 
 JumpPower_Input.Name = "JumpPower_Input"
 JumpPower_Input.Parent = Character_Section
-JumpPower_Input.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+JumpPower_Input.BackgroundColor3 = Color3.fromRGB(140, 0, 0)
 JumpPower_Input.BackgroundTransparency = 0.300
 JumpPower_Input.BorderColor3 = Color3.fromRGB(255, 0, 0)
 JumpPower_Input.Position = UDim2.new(0, 210, 0, 75)
@@ -1079,7 +1061,7 @@ FlySpeed_Button.TextWrapped = true
 
 FlySpeed_Input.Name = "FlySpeed_Input"
 FlySpeed_Input.Parent = Character_Section
-FlySpeed_Input.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+FlySpeed_Input.BackgroundColor3 = Color3.fromRGB(140, 0, 0)
 FlySpeed_Input.BackgroundTransparency = 0.300
 FlySpeed_Input.BorderColor3 = Color3.fromRGB(255, 0, 0)
 FlySpeed_Input.Position = UDim2.new(0, 210, 0, 125)
@@ -1123,14 +1105,14 @@ Target_Section.ScrollBarThickness = 5
 TargetImage.Name = "TargetImage"
 TargetImage.Parent = Target_Section
 TargetImage.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-TargetImage.BorderColor3 = Color3.fromRGB(255, 0, 0) -- red border
+TargetImage.BorderColor3 = Color3.fromRGB(255, 0, 0)
 TargetImage.Position = UDim2.new(0, 25, 0, 25)
 TargetImage.Size = UDim2.new(0, 100, 0, 100)
 TargetImage.Image = "rbxassetid://10818605405"
 
 TargetName_Input.Name = "TargetName_Input"
 TargetName_Input.Parent = Target_Section
-TargetName_Input.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+TargetName_Input.BackgroundColor3 = Color3.fromRGB(140, 0, 0)
 TargetName_Input.BackgroundTransparency = 0.300
 TargetName_Input.BorderColor3 = Color3.fromRGB(255, 0, 0)
 TargetName_Input.Position = UDim2.new(0, 150, 0, 30)
@@ -1163,7 +1145,7 @@ UserIDTargetLabel.Position = UDim2.new(0, 150, 0, 70)
 UserIDTargetLabel.Size = UDim2.new(0, 300, 0, 75)
 UserIDTargetLabel.Font = Enum.Font.Oswald
 UserIDTargetLabel.Text = "UserID: \nDisplay: \nJoined: "
-UserIDTargetLabel.TextColor3 = Color3.fromRGB(255, 0, 0) -- red
+UserIDTargetLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
 UserIDTargetLabel.TextSize = 18.000
 UserIDTargetLabel.TextWrapped = true
 UserIDTargetLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -1193,7 +1175,7 @@ FlingTarget_Button.BorderSizePixel = 0
 FlingTarget_Button.Position = UDim2.new(0, 25, 0, 150)
 FlingTarget_Button.Size = UDim2.new(0, 150, 0, 30)
 FlingTarget_Button.Font = Enum.Font.Oswald
-FlingTarget_Button.Text = "Fling"
+FlingTarget_Button.Text = "Copy Anim"
 FlingTarget_Button.TextColor3 = Color3.fromRGB(0, 0, 0)
 FlingTarget_Button.TextScaled = true
 FlingTarget_Button.TextSize = 14.000
@@ -1208,7 +1190,7 @@ FocusTarget_Button.BorderSizePixel = 0
 FocusTarget_Button.Position = UDim2.new(0, 25, 0, 200)
 FocusTarget_Button.Size = UDim2.new(0, 150, 0, 30)
 FocusTarget_Button.Font = Enum.Font.Oswald
-FocusTarget_Button.Text = "Focus"
+FocusTarget_Button.Text = "Chat Copy"
 FocusTarget_Button.TextColor3 = Color3.fromRGB(0, 0, 0)
 FocusTarget_Button.TextScaled = true
 FocusTarget_Button.TextSize = 14.000
@@ -1349,7 +1331,6 @@ DragTarget_Button.TextScaled = true
 DragTarget_Button.TextSize = 14.000
 DragTarget_Button.TextWrapped = true
 
--- SPAMMER Section (replaces Animations)
 Spammer_Section.Name = "Spammer_Section"
 Spammer_Section.Parent = Background
 Spammer_Section.Active = true
@@ -1360,8 +1341,23 @@ Spammer_Section.BorderSizePixel = 0
 Spammer_Section.Position = UDim2.new(0, 105, 0, 30)
 Spammer_Section.Size = UDim2.new(0, 395, 0, 320)
 Spammer_Section.Visible = false
-Spammer_Section.CanvasSize = UDim2.new(0, 0, 0.3, 0) -- small for now
+Spammer_Section.CanvasSize = UDim2.new(0, 0, 0.8, 0)
 Spammer_Section.ScrollBarThickness = 5
+
+FangSpam_Button.Name = "FangSpam_Button"
+FangSpam_Button.Parent = Spammer_Section
+FangSpam_Button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+FangSpam_Button.BackgroundTransparency = 0.500
+FangSpam_Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
+FangSpam_Button.BorderSizePixel = 0
+FangSpam_Button.Position = UDim2.new(0, 25, 0, 25)
+FangSpam_Button.Size = UDim2.new(0, 150, 0, 30)
+FangSpam_Button.Font = Enum.Font.Oswald
+FangSpam_Button.Text = "FANG SPAM💢"
+FangSpam_Button.TextColor3 = Color3.fromRGB(0, 0, 0)
+FangSpam_Button.TextScaled = true
+FangSpam_Button.TextSize = 14.000
+FangSpam_Button.TextWrapped = true
 
 FangCustomSpam_Button.Name = "FangCustomSpam_Button"
 FangCustomSpam_Button.Parent = Spammer_Section
@@ -1369,16 +1365,14 @@ FangCustomSpam_Button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 FangCustomSpam_Button.BackgroundTransparency = 0.500
 FangCustomSpam_Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
 FangCustomSpam_Button.BorderSizePixel = 0
-FangCustomSpam_Button.Position = UDim2.new(0, 25, 0, 25)
-FangCustomSpam_Button.Size = UDim2.new(0, 350, 0, 40)
+FangCustomSpam_Button.Position = UDim2.new(0, 210, 0, 25)
+FangCustomSpam_Button.Size = UDim2.new(0, 150, 0, 30)
 FangCustomSpam_Button.Font = Enum.Font.Oswald
 FangCustomSpam_Button.Text = "FANG CUSTOME SPAM💢"
 FangCustomSpam_Button.TextColor3 = Color3.fromRGB(0, 0, 0)
 FangCustomSpam_Button.TextScaled = true
 FangCustomSpam_Button.TextSize = 14.000
 FangCustomSpam_Button.TextWrapped = true
-
--- (Add more spam buttons here if needed)
 
 Misc_Section.Name = "Misc_Section"
 Misc_Section.Parent = Background
@@ -1606,11 +1600,11 @@ Credits_Label.Parent = Credits_Section
 Credits_Label.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 Credits_Label.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Credits_Label.BorderSizePixel = 0
-Credits_Label.Position = UDim2.new(0, 25, 0, 50) -- adjusted y to fit new text
-Credits_Label.Size = UDim2.new(0, 350, 0, 250)
+Credits_Label.Position = UDim2.new(0, 25, 0, 150)
+Credits_Label.Size = UDim2.new(0, 350, 0, 150)
 Credits_Label.Font = Enum.Font.SourceSans
 Credits_Label.Text = "Mᴀᴅᴇ Bʏ > Eᴀ_Fᴀɴɢ\n👑Tʜᴇ-Cʀᴇᴀᴛᴏʀ ᴏғ『Eɴᴅʟᴇss Aᴜʀᴀ』💢"
-Credits_Label.TextColor3 = Color3.fromRGB(255, 0, 0) -- red
+Credits_Label.TextColor3 = Color3.fromRGB(255, 0, 0)
 Credits_Label.TextSize = 24.000
 Credits_Label.TextWrapped = true
 Credits_Label.TextXAlignment = Enum.TextXAlignment.Left
@@ -1626,7 +1620,7 @@ Crown.BorderSizePixel = 0
 Crown.Rotation = -20.000
 Crown.Size = UDim2.new(0, 75, 0, 75)
 Crown.Image = "rbxassetid://12298407748"
-Crown.ImageColor3 = Color3.fromRGB(255, 0, 0) -- red
+Crown.ImageColor3 = Color3.fromRGB(255, 0, 0)
 
 Assets.Name = "Assets"
 Assets.Parent = SysBroker
@@ -1641,7 +1635,7 @@ Ticket_Asset.Position = UDim2.new(1, 5, 0.5, 0)
 Ticket_Asset.Size = UDim2.new(0, 25, 0, 25)
 Ticket_Asset.ZIndex = 2
 Ticket_Asset.Image = "rbxassetid://3926305904"
-Ticket_Asset.ImageColor3 = Color3.fromRGB(255, 0, 0) -- red (off)
+Ticket_Asset.ImageColor3 = Color3.fromRGB(255, 0, 0)
 Ticket_Asset.ImageRectOffset = Vector2.new(424, 4)
 Ticket_Asset.ImageRectSize = Vector2.new(36, 36)
 
@@ -1675,7 +1669,7 @@ Fly_Pad.ImageRectOffset = Vector2.new(713, 315)
 Fly_Pad.ImageRectSize = Vector2.new(75, 75)
 Fly_Pad.Visible = false
 
-UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(30, 30, 30)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))} -- red gradient
+UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(30, 30, 30)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))}
 UIGradient.Rotation = 45
 UIGradient.Parent = Fly_Pad
 
@@ -1743,12 +1737,11 @@ OpenClose.BorderSizePixel = 0
 OpenClose.Position = UDim2.new(0, 0, 0.5, 0)
 OpenClose.Size = UDim2.new(0, 30, 0, 30)
 OpenClose.Image = "rbxassetid://12298407748"
-OpenClose.ImageColor3 = Color3.fromRGB(255, 0, 0) -- red
+OpenClose.ImageColor3 = Color3.fromRGB(255, 0, 0)
 
 UICornerOC.CornerRadius = UDim.new(1, 0)
 UICornerOC.Parent = OpenClose
 
--- Toggles/Clicks for buttons (same as before but now with red theme)
 CreateToggle(AntiRagdoll_Button)
 CreateToggle(PushAura_Button)
 CreateToggle(SpamMines_Button)
@@ -1793,9 +1786,8 @@ CreateClicker(PushTarget_Button)
 CreateClicker(WhitelistTarget_Button)
 CreateClicker(TeleportTarget_Button)
 
--- No animation buttons anymore
--- CreateClicker for spam button (optional, we can use clicker but we'll just use MouseButton1Click)
--- We'll add a clicker for FangCustomSpam_Button if needed, but we'll handle click directly.
+CreateClicker(FangSpam_Button)
+CreateClicker(FangCustomSpam_Button)
 
 CreateToggle(AntiFling_Button)
 CreateToggle(AntiChatSpy_Button)
@@ -1834,7 +1826,7 @@ end
 local function UpdateTarget(player)
 	pcall(function()
 		if table.find(ForceWhitelist,player.UserId) then
-			SendNotify("System Broken","You cant target this player: @"..player.Name.." / "..player.DisplayName,5)
+			SendNotify("EA_FANGV1","You cant target this player: @"..player.Name.." / "..player.DisplayName,5)
 			player = nil
 		end
 	end)
@@ -1861,25 +1853,6 @@ local function UpdateTarget(player)
 		DoggyTarget_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0)
 		DragTarget_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0)
 	end
-end
-
-local function ToggleFling(bool)
-	task.spawn(function()
-		if bool then
-			local RVelocity = nil
-			repeat
-				pcall(function()
-					RVelocity = GetRoot(plr).Velocity 
-					GetRoot(plr).Velocity = Vector3.new(math.random(-150,150),-25000,math.random(-150,150))
-					RunService.RenderStepped:wait()
-					GetRoot(plr).Velocity = RVelocity
-				end)
-				RunService.Heartbeat:wait()
-			until TouchFling_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(255,0,0)
-		else
-			TouchFling_Button.Ticket_Asset.ImageColor3 = Color3.fromRGB(255,0,0)
-		end
-	end)
 end
 
 --CHANGE SECTION BUTTONS
@@ -2009,7 +1982,7 @@ TouchFling_Button.MouseButton1Click:Connect(function()
 	if TouchFling_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
 		local fixpos = GetRoot(plr).Position
 		ToggleVoidProtection(true)
-		ToggleFling(true)
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/THEBESTLEADERSHIP/EA_FANGV1/refs/heads/main/Touch%20Fling"))()
 		TeleportTO(fixpos.X,fixpos.Y,fixpos.Z,"pos","safe")
 		ToggleVoidProtection(false)
 		if VoidProtection_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
@@ -2203,7 +2176,7 @@ end)
 CMDBar.FocusLost:Connect(function()
 	command = CMDBar.Text
 	Players:Chat(command)
-	SendNotify("System Broken",("Executed "..command),5)
+	SendNotify("EA_FANGV1",("Executed "..command),5)
 	CMDBar.Text = ""
 end)
 
@@ -2216,7 +2189,7 @@ WalkSpeed_Button.MouseButton1Click:Connect(function()
 			Speed = 16
 		end
 		plr.Character.Humanoid.WalkSpeed = tonumber(Speed)
-		SendNotify("System Broken","Walk speed updated.",5)
+		SendNotify("EA_FANGV1","Walk speed updated.",5)
 	end)
 end)
 
@@ -2227,7 +2200,7 @@ JumpPower_Button.MouseButton1Click:Connect(function()
 			Power = 50
 		end
 		plr.Character.Humanoid.JumpPower = tonumber(Power)
-		SendNotify("System Broken","Jump power updated.",5)
+		SendNotify("EA_FANGV1","Jump power updated.",5)
 	end)
 end)
 
@@ -2238,7 +2211,7 @@ FlySpeed_Button.MouseButton1Click:Connect(function()
 			Speed = 50
 		end
 		FlySpeed = tonumber(Speed)
-		SendNotify("System Broken","Fly speed updated.",5)
+		SendNotify("EA_FANGV1","Fly speed updated.",5)
 	end)
 end)
 
@@ -2251,107 +2224,180 @@ end)
 
 SaveCheckpoint_Button.MouseButton1Click:Connect(function()
 	SavedCheckpoint = GetRoot(plr).Position
-	SendNotify("System Broken","Checkpoint saved.",5)
+	SendNotify("EA_FANGV1","Checkpoint saved.",5)
 end)
 
 ClearCheckpoint_Button.MouseButton1Click:Connect(function()
 	SavedCheckpoint = nil
-	SendNotify("System Broken","Checkpoint cleared.",5)
+	SendNotify("EA_FANGV1","Checkpoint cleared.",5)
 end)
 
-local flying = true
-local deb = true
-local ctrl = {f = 0, b = 0, l = 0, r = 0}
-local lastctrl = {f = 0, b = 0, l = 0, r = 0}
-local KeyDownFunction = nil
-local KeyUpFunction = nil
 Fly_Button.MouseButton1Click:Connect(function()
 	ChangeToggleColor(Fly_Button)
 	if Fly_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
-		flying = true
-		if game:GetService("UserInputService").TouchEnabled then
-			Fly_Pad.Visible = true
-		end
-		local UpperTorso = plr.Character.UpperTorso
-		local speed = 0
-		local function Fly()
-			local bg = Instance.new("BodyGyro", UpperTorso)
-			bg.P = 9e4
-			bg.maxTorque = Vector3.new(9e9, 9e9, 9e9)
-			bg.cframe = UpperTorso.CFrame
-			local bv = Instance.new("BodyVelocity", UpperTorso)
-			bv.velocity = Vector3.new(0,0.1,0)
-			bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
-			PlayAnim(10714347256,4,0)
-			repeat task.wait()
-				plr.Character.Humanoid.PlatformStand = true
-				if ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0 then
-					speed = speed+FlySpeed*0.10
-					if speed > FlySpeed then
-						speed = FlySpeed
-					end
-				elseif not (ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0) and speed ~= 0 then
-					speed = speed-FlySpeed*0.10
-					if speed < 0 then
-						speed = 0
-					end
-				end
-				if (ctrl.l + ctrl.r) ~= 0 or (ctrl.f + ctrl.b) ~= 0 then
-					bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (ctrl.f+ctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(ctrl.l+ctrl.r,(ctrl.f+ctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
-					lastctrl = {f = ctrl.f, b = ctrl.b, l = ctrl.l, r = ctrl.r}
-				elseif (ctrl.l + ctrl.r) == 0 and (ctrl.f + ctrl.b) == 0 and speed ~= 0 then
-					bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (lastctrl.f+lastctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(lastctrl.l+lastctrl.r,(lastctrl.f+lastctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
-				else
-					bv.velocity = Vector3.new(0,0.1,0)
-				end
-				bg.cframe = game.Workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((ctrl.f+ctrl.b)*50*speed/FlySpeed),0,0)
-			until not flying
-			ctrl = {f = 0, b = 0, l = 0, r = 0}
-			lastctrl = {f = 0, b = 0, l = 0, r = 0}
-			speed = 0
-			bg:Destroy()
-			bv:Destroy()
-			plr.Character.Humanoid.PlatformStand = false
-		end
+		loadstring([[
+			local Players = game:GetService("Players")
+			local RunService = game:GetService("RunService")
+			local Workspace = game:GetService("Workspace")
+			local VirtualUser = game:GetService("VirtualUser")
+			local UserInputService = game:GetService("UserInputService")
 
-		KeyDownFunction = mouse.KeyDown:connect(function(key)
-			if key:lower() == "w" then
-				ctrl.f = 1
-				PlayAnim(10714177846,4.65,0)
-			elseif key:lower() == "s" then
-				ctrl.b = -1
-				PlayAnim(10147823318,4.11,0)
-			elseif key:lower() == "a" then
-				ctrl.l = -1
-				PlayAnim(10147823318,3.55,0)
-			elseif key:lower() == "d" then
-				ctrl.r = 1
-				PlayAnim(10147823318,4.81,0)
-			end
-		end)
+			local player = Players.LocalPlayer
+			local camera = Workspace.CurrentCamera
 
-		KeyUpFunction = mouse.KeyUp:connect(function(key)
-			if key:lower() == "w" then
-				ctrl.f = 0
-				PlayAnim(10714347256,4,0)
-			elseif key:lower() == "s" then
-				ctrl.b = 0
-				PlayAnim(10714347256,4,0)
-			elseif key:lower() == "a" then
-				ctrl.l = 0
-				PlayAnim(10714347256,4,0)
-			elseif key:lower() == "d" then
-				ctrl.r = 0
-				PlayAnim(10714347256,4,0)
+			local flySpeed = 50
+			local lastMoveDirection = nil
+
+			local function antiCheatBypass()
+			    pcall(function()
+			        VirtualUser:CaptureController()
+			        VirtualUser:ClickButton2(Vector2.new())
+			    end)
+			    pcall(function()
+			        local char = player.Character
+			        if char then
+			            for _, v in pairs(char:GetDescendants()) do
+			                if v:IsA("BasePart") then
+			                    v:SetAttribute("CanCollide", false)
+			                end
+			            end
+			        end
+			    end)
 			end
-		end)
-		Fly()
+
+			local function cleanupFly()
+			    _G.FlyActive = false
+			    if _G.FlyConnection then
+			        _G.FlyConnection:Disconnect()
+			        _G.FlyConnection = nil
+			    end
+			    if _G.FlyObjects then
+			        if _G.FlyObjects.bodyVel then _G.FlyObjects.bodyVel:Destroy() end
+			        if _G.FlyObjects.bodyGyro then _G.FlyObjects.bodyGyro:Destroy() end
+			        _G.FlyObjects = nil
+			    end
+			    local char = player.Character
+			    if char and char:FindFirstChild("Humanoid") then
+			        local hum = char.Humanoid
+			        hum.PlatformStand = false
+			        hum.AutoRotate = true
+			        hum.Sit = false
+			    end
+			    lastMoveDirection = nil
+			end
+
+			local function startFly()
+			    local char = player.Character
+			    if not char then return end
+			    local hrp = char:FindFirstChild("HumanoidRootPart")
+			    local hum = char:FindFirstChild("Humanoid")
+			    if not hrp or not hum then return end
+
+			    antiCheatBypass()
+			    _G.FlyActive = true
+			    _G.FlyObjects = {}
+
+			    local bodyVel = Instance.new("BodyVelocity")
+			    bodyVel.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+			    bodyVel.Velocity = Vector3.zero
+			    bodyVel.Parent = hrp
+			    _G.FlyObjects.bodyVel = bodyVel
+
+			    local bodyGyro = Instance.new("BodyGyro")
+			    bodyGyro.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+			    bodyGyro.P = 10000
+			    bodyGyro.D = 500
+			    bodyGyro.CFrame = hrp.CFrame
+			    bodyGyro.Parent = hrp
+			    _G.FlyObjects.bodyGyro = bodyGyro
+
+			    hum.PlatformStand = true
+			    hum.AutoRotate = false
+			    hum.Sit = false
+
+			    _G.FlyConnection = RunService.RenderStepped:Connect(function()
+			        if not char or not char.Parent or hum.Health <= 0 then
+			            cleanupFly()
+			            return
+			        end
+			        antiCheatBypass()
+
+			        local moveVector = Vector3.zero
+			        pcall(function()
+			            local controls = require(player.PlayerScripts.PlayerModule):GetControls()
+			            moveVector = controls:GetMoveVector()
+			        end)
+
+			        if moveVector.Magnitude > 0.01 then
+			            local camCF = camera.CFrame
+			            local flyDir = (camCF.RightVector * moveVector.X) + (camCF.LookVector * -moveVector.Z)
+			            flyDir = flyDir.Unit
+
+			            local targetVel = flyDir * flySpeed
+			            bodyVel.Velocity = bodyVel.Velocity:Lerp(targetVel, 0.15)
+
+			            if flyDir.Magnitude > 0.01 then
+			                local targetCF = CFrame.lookAt(hrp.Position, hrp.Position + flyDir)
+			                bodyGyro.CFrame = bodyGyro.CFrame:Lerp(targetCF, 0.2)
+			                lastMoveDirection = flyDir
+			            end
+			        else
+			            bodyVel.Velocity = bodyVel.Velocity:Lerp(Vector3.zero, 0.1)
+			            if lastMoveDirection then
+			                local currentCF = bodyGyro.CFrame
+			                local targetCF = CFrame.lookAt(hrp.Position, hrp.Position + lastMoveDirection)
+			                bodyGyro.CFrame = currentCF:Lerp(targetCF, 0.05)
+			            end
+			        end
+			    end)
+			end
+
+			if _G.FlyActive then
+			    cleanupFly()
+			else
+			    startFly()
+			end
+
+			UserInputService.InputBegan:Connect(function(input, gameProcessed)
+			    if gameProcessed then return end
+			    if input.KeyCode == Enum.KeyCode.F then
+			        if _G.FlyActive then
+			            cleanupFly()
+			        else
+			            startFly()
+			        end
+			    end
+			end)
+
+			player.CharacterAdded:Connect(function(char)
+			    task.wait(1)
+			    if _G.FlyActive then
+			        cleanupFly()
+			        task.wait(0.1)
+			        startFly()
+			    end
+			end)
+		]])
+		Fly_Pad.Visible = true
 	else
-		flying = false
+		_G.FlyActive = false
 		Fly_Pad.Visible = false
-		KeyDownFunction:Disconnect()
-		KeyUpFunction:Disconnect()
-		StopAnim()
+		if _G.FlyConnection then
+			_G.FlyConnection:Disconnect()
+			_G.FlyConnection = nil
+		end
+		if _G.FlyObjects then
+			if _G.FlyObjects.bodyVel then _G.FlyObjects.bodyVel:Destroy() end
+			if _G.FlyObjects.bodyGyro then _G.FlyObjects.bodyGyro:Destroy() end
+			_G.FlyObjects = nil
+		end
+		local char = plr.Character
+		if char and char:FindFirstChild("Humanoid") then
+			local hum = char.Humanoid
+			hum.PlatformStand = false
+			hum.AutoRotate = true
+			hum.Sit = false
+		end
 	end
 end)
 
@@ -2413,56 +2459,29 @@ ClickTargetTool_Button.MouseButton1Click:Connect(function()
 	GetTargetTool.Parent = plr.Backpack
 end)
 
--- Helper function for sticky attach modes
-local function startStickyMode(button, getTargetPart, getPlayerCFrame)
-	local running = true
-	-- enable void protection to avoid falling
-	local wasVoid = VoidProtection_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0)
-	if not wasVoid then ToggleVoidProtection(true) end
-	
-	-- play animation 507777268 (common for headsit and bang)
-	PlayAnim("507777268", 0, 1)
-	
-	-- loop on RenderStepped for zero delay
-	local connection
-	connection = RunService.RenderStepped:Connect(function()
-		if not running or button.Ticket_Asset.ImageColor3 == Color3.fromRGB(255,0,0) then
-			running = false
-			connection:Disconnect()
-			StopAnim()
-			if not wasVoid then ToggleVoidProtection(false) end
-			return
-		end
-		pcall(function()
-			local target = Players[TargetedPlayer]
-			if not target or not target.Character then return end
-			local part = getTargetPart(target)
-			if not part then return end
-			local root = GetRoot(plr)
-			if not root then return end
-			root.CFrame = getPlayerCFrame(part)
-			root.Velocity = Vector3.new(0,0,0)
-			plr.Character.Humanoid.PlatformStand = true
-		end)
-	end)
-	
-	-- also handle character respawn: when target respawns, we keep sticking
-	-- we'll just let the loop re-find the part each frame
-end
-
-HeadsitTarget_Button.MouseButton1Click:Connect(function()
+FlingTarget_Button.MouseButton1Click:Connect(function()
 	if TargetedPlayer ~= nil then
-		ChangeToggleColor(HeadsitTarget_Button)
-		if HeadsitTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
-			startStickyMode(HeadsitTarget_Button,
-				function(target) return target.Character:FindFirstChild("Head") end,
-				function(part) 
-					-- front headsit: sit on head, slightly forward, face same direction
-					return part.CFrame * CFrame.new(0, 1.5, 0.5) 
-				end
-			)
+		ChangeToggleColor(FlingTarget_Button)
+		if FlingTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
+			if TouchFling_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(255,0,0) then
+				ChangeToggleColor(TouchFling_Button)
+			end
+			local OldPos = GetRoot(plr).Position
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/THEBESTLEADERSHIP/EA_FANGV1/refs/heads/main/Endless%20Copy%20Ninja%20V38"))()
+			TeleportTO(OldPos.X,OldPos.Y,OldPos.Z,"pos","safe")
+		end
+	end
+end)
+
+FocusTarget_Button.MouseButton1Click:Connect(function()
+	if TargetedPlayer ~= nil then
+		ChangeToggleColor(FocusTarget_Button)
+		if FocusTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/THEBESTLEADERSHIP/EA_FANGV1/refs/heads/main/Endless%20Chat%20Ninja%20V38"))()
 		else
-			-- toggled off, stop handled by the loop
+			if _G.ChatSync then
+				_G.ChatSync = false
+			end
 		end
 	end
 end)
@@ -2471,13 +2490,53 @@ BenxTarget_Button.MouseButton1Click:Connect(function()
 	if TargetedPlayer ~= nil then
 		ChangeToggleColor(BenxTarget_Button)
 		if BenxTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
-			startStickyMode(BenxTarget_Button,
-				function(target) return GetRoot(target) end,
-				function(part) 
-					-- stick behind target (like original) but with animation 507777268
-					return part.CFrame * CFrame.new(0, 0, 1.1) 
-				end
-			)
+			PlayAnim(507777268,0,1)
+			repeat
+				pcall(function()
+					if not GetRoot(plr):FindFirstChild("BreakVelocity") then
+						pcall(function()
+							local TempV = Velocity_Asset:Clone()
+							TempV.Parent = GetRoot(plr)
+						end)
+					end
+					local otherRoot = GetRoot(Players[TargetedPlayer])
+					GetRoot(plr).CFrame = otherRoot.CFrame * CFrame.new(0,0,1.1)
+					GetRoot(plr).Velocity = Vector3.new(0,0,0)
+				end)
+				task.wait()
+			until BenxTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(255,0,0)
+			StopAnim()
+			if GetRoot(plr):FindFirstChild("BreakVelocity") then
+				GetRoot(plr).BreakVelocity:Destroy()
+			end
+		end
+	end
+end)
+
+HeadsitTarget_Button.MouseButton1Click:Connect(function()
+	if TargetedPlayer ~= nil then
+		ChangeToggleColor(HeadsitTarget_Button)
+		if HeadsitTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
+			PlayAnim(507772104,0,1)
+			repeat
+				pcall(function()
+					if not GetRoot(plr):FindFirstChild("BreakVelocity") then
+						pcall(function()
+							local TempV = Velocity_Asset:Clone()
+							TempV.Parent = GetRoot(plr)
+						end)
+					end
+					local targethead = Players[TargetedPlayer].Character.Head
+					plr.Character.Humanoid.Sit = true
+					GetRoot(plr).CFrame = targethead.CFrame * CFrame.new(0,0.1,1.5) * CFrame.Angles(-2.5, 0, 0)
+					GetRoot(plr).Velocity = Vector3.new(0,0,0)
+				end)
+				task.wait()
+			until HeadsitTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(255,0,0)
+			StopAnim()
+			if GetRoot(plr):FindFirstChild("BreakVelocity") then
+				GetRoot(plr).BreakVelocity:Destroy()
+			end
 		end
 	end
 end)
@@ -2486,12 +2545,25 @@ StandTarget_Button.MouseButton1Click:Connect(function()
 	if TargetedPlayer ~= nil then
 		ChangeToggleColor(StandTarget_Button)
 		if StandTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
-			startStickyMode(StandTarget_Button,
-				function(target) return GetRoot(target) end,
-				function(part) 
-					return part.CFrame * CFrame.new(-3, 1, 0) 
-				end
-			)
+			PlayAnim(13823324057,4,0)
+			repeat
+				pcall(function()
+					if not GetRoot(plr):FindFirstChild("BreakVelocity") then
+						pcall(function()
+							local TempV = Velocity_Asset:Clone()
+							TempV.Parent = GetRoot(plr)
+						end)
+					end
+					local root = GetRoot(Players[TargetedPlayer])
+					GetRoot(plr).CFrame = root.CFrame * CFrame.new(-3,1,0)
+					GetRoot(plr).Velocity = Vector3.new(0,0,0)
+				end)
+				task.wait()
+			until StandTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(255,0,0)
+			StopAnim()
+			if GetRoot(plr):FindFirstChild("BreakVelocity") then
+				GetRoot(plr).BreakVelocity:Destroy()
+			end
 		end
 	end
 end)
@@ -2500,13 +2572,26 @@ BackpackTarget_Button.MouseButton1Click:Connect(function()
 	if TargetedPlayer ~= nil then
 		ChangeToggleColor(BackpackTarget_Button)
 		if BackpackTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
-			startStickyMode(BackpackTarget_Button,
-				function(target) return GetRoot(target) end,
-				function(part) 
+			PlayAnim(13231795587,0,0)
+			repeat
+				pcall(function()
+					if not GetRoot(plr):FindFirstChild("BreakVelocity") then
+						pcall(function()
+							local TempV = Velocity_Asset:Clone()
+							TempV.Parent = GetRoot(plr)
+						end)
+					end
+					local root = GetRoot(Players[TargetedPlayer])
 					plr.Character.Humanoid.Sit = true
-					return part.CFrame * CFrame.new(0, 0, 1.2) * CFrame.Angles(0, -3, 0)
-				end
-			)
+					GetRoot(plr).CFrame = root.CFrame * CFrame.new(0,0,1.2) * CFrame.Angles(0, -3, 0)
+					GetRoot(plr).Velocity = Vector3.new(0,0,0)
+				end)
+				task.wait()
+			until BackpackTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(255,0,0)
+			StopAnim()
+			if GetRoot(plr):FindFirstChild("BreakVelocity") then
+				GetRoot(plr).BreakVelocity:Destroy()
+			end
 		end
 	end
 end)
@@ -2515,12 +2600,25 @@ DoggyTarget_Button.MouseButton1Click:Connect(function()
 	if TargetedPlayer ~= nil then
 		ChangeToggleColor(DoggyTarget_Button)
 		if DoggyTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
-			startStickyMode(DoggyTarget_Button,
-				function(target) return target.Character:FindFirstChild("LowerTorso") end,
-				function(part) 
-					return part.CFrame * CFrame.new(0, 0.23, 0)
-				end
-			)
+			PlayAnim(13694096724,3.4,0)
+			repeat
+				pcall(function()
+					if not GetRoot(plr):FindFirstChild("BreakVelocity") then
+						pcall(function()
+							local TempV = Velocity_Asset:Clone()
+							TempV.Parent = GetRoot(plr)
+						end)
+					end
+					local root = Players[TargetedPlayer].Character.LowerTorso
+					GetRoot(plr).CFrame = root.CFrame * CFrame.new(0,0.23,0)
+					GetRoot(plr).Velocity = Vector3.new(0,0,0)
+				end)
+				task.wait()
+			until DoggyTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(255,0,0)
+			StopAnim()
+			if GetRoot(plr):FindFirstChild("BreakVelocity") then
+				GetRoot(plr).BreakVelocity:Destroy()
+			end
 		end
 	end
 end)
@@ -2529,12 +2627,25 @@ DragTarget_Button.MouseButton1Click:Connect(function()
 	if TargetedPlayer ~= nil then
 		ChangeToggleColor(DragTarget_Button)
 		if DragTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
-			startStickyMode(DragTarget_Button,
-				function(target) return target.Character:FindFirstChild("RightHand") end,
-				function(part) 
-					return part.CFrame * CFrame.new(0, -2.5, 1) * CFrame.Angles(-2, -3, 0)
-				end
-			)
+			PlayAnim(10714360343,0.5,0)
+			repeat
+				pcall(function()
+					if not GetRoot(plr):FindFirstChild("BreakVelocity") then
+						pcall(function()
+							local TempV = Velocity_Asset:Clone()
+							TempV.Parent = GetRoot(plr)
+						end)
+					end
+					local root = Players[TargetedPlayer].Character.RightHand
+					GetRoot(plr).CFrame = root.CFrame * CFrame.new(0,-2.5,1) * CFrame.Angles(-2, -3, 0)
+					GetRoot(plr).Velocity = Vector3.new(0,0,0)
+				end)
+				task.wait()
+			until DragTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(255,0,0)
+			StopAnim()
+			if GetRoot(plr):FindFirstChild("BreakVelocity") then
+				GetRoot(plr).BreakVelocity:Destroy()
+			end
 		end
 	end
 end)
@@ -2563,10 +2674,10 @@ WhitelistTarget_Button.MouseButton1Click:Connect(function()
 					table.remove(ScriptWhitelist, i)
 				end
 			end
-			SendNotify("System Broken",TargetedPlayer.." removed from whitelist.",5)
+			SendNotify("EA_FANGV1",TargetedPlayer.." removed from whitelist.",5)
 		else
 			table.insert(ScriptWhitelist, Players[TargetedPlayer].UserId)
-			SendNotify("System Broken",TargetedPlayer.." added to whitelist.", 5)
+			SendNotify("EA_FANGV1",TargetedPlayer.." added to whitelist.", 5)
 		end
 	end
 end)
@@ -2577,12 +2688,14 @@ TargetName_Input.FocusLost:Connect(function()
 	UpdateTarget(LabelTarget)
 end)
 
--- SPAMMER SECTION
+--SPAMMER
+FangSpam_Button.MouseButton1Click:Connect(function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/THEBESTLEADERSHIP/EAFANGV1/refs/heads/main/FANG%20SPAM%F0%9F%92%A2"))()
+end)
+
 FangCustomSpam_Button.MouseButton1Click:Connect(function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/THEBESTLEADERSHIP/EA_FANG/refs/heads/main/FANG%20CUSTOME%20SPAM%F0%9F%92%A2"))()
 end)
-
--- (Add more spam buttons here with similar logic)
 
 --MISC
 
@@ -2672,7 +2785,7 @@ Day_Button.MouseButton1Click:Connect(function()
 	if Shaders_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(255,0,0) then
 		game:GetService("Lighting").ClockTime = 14
 	else
-		SendNotify("System Broken","Please turn off shaders.",5)
+		SendNotify("EA_FANGV1","Please turn off shaders.",5)
 	end
 end)
 
@@ -2680,7 +2793,7 @@ Night_Button.MouseButton1Click:Connect(function()
 	if Shaders_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(255,0,0) then
 		game:GetService("Lighting").ClockTime = 19
 	else
-		SendNotify("System Broken","Please turn off shaders.",5)
+		SendNotify("EA_FANGV1","Please turn off shaders.",5)
 	end
 end)
 
@@ -2708,7 +2821,7 @@ end)
 FreeEmotes_Button.MouseButton1Click:Connect(function()
 	if not FreeEmotesEnabled then
 		FreeEmotesEnabled = true
-		SendNotify("System Broken","Loading free emotes.\nCredits: Gi#7331")
+		SendNotify("EA_FANGV1","Loading free emotes.\nCredits: Gi#7331")
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/H20CalibreYT/SystemBroken/main/AllEmotes"))()
 	end
 end)
@@ -2746,7 +2859,7 @@ Players.PlayerRemoving:Connect(function(player)
 	pcall(function()
 		if player.Name == TargetedPlayer then
 			UpdateTarget(nil)
-			SendNotify("System Broken","Targeted player left/rejoined.",5)
+			SendNotify("EA_FANGV1","Targeted player left/rejoined.",5)
 		end
 	end)
 end)
@@ -2759,27 +2872,50 @@ plr.CharacterAdded:Connect(function(x)
 	end
 	if PotionDi_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
 		ChangeToggleColor(PotionDi_Button)
-		SendNotify("System Broken","PotionDick was automatically disabled due to your character respawn",5)
+		SendNotify("EA_FANGV1","PotionDick was automatically disabled due to your character respawn",5)
 	end
 	if PotionFling_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
 		ChangeToggleColor(PotionFling_Button)
-		SendNotify("System Broken","PotionFling was automatically disabled due to your character respawn",5)
+		SendNotify("EA_FANGV1","PotionFling was automatically disabled due to your character respawn",5)
 	end
 	if AntiRagdoll_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
 		ChangeToggleColor(AntiRagdoll_Button)
-		SendNotify("System Broken","AntiRagdoll was automatically disabled due to your character respawn",5)
+		SendNotify("EA_FANGV1","AntiRagdoll was automatically disabled due to your character respawn",5)
 	end
 	if SpamMines_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
 		ChangeToggleColor(SpamMines_Button)
-		SendNotify("System Broken","SpamMines was automatically disabled due to your character respawn",5)
+		SendNotify("EA_FANGV1","SpamMines was automatically disabled due to your character respawn",5)
 	end
 	if Fly_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
 		ChangeToggleColor(Fly_Button)
-		flying = false
+		_G.FlyActive = false
 		Fly_Pad.Visible = false
-		KeyDownFunction:Disconnect()
-		KeyUpFunction:Disconnect()
-		SendNotify("System Broken","Fly was automatically disabled due to your character respawn",5)
+		if _G.FlyConnection then
+			_G.FlyConnection:Disconnect()
+			_G.FlyConnection = nil
+		end
+		if _G.FlyObjects then
+			if _G.FlyObjects.bodyVel then _G.FlyObjects.bodyVel:Destroy() end
+			if _G.FlyObjects.bodyGyro then _G.FlyObjects.bodyGyro:Destroy() end
+			_G.FlyObjects = nil
+		end
+		local char = plr.Character
+		if char and char:FindFirstChild("Humanoid") then
+			local hum = char.Humanoid
+			hum.PlatformStand = false
+			hum.AutoRotate = true
+			hum.Sit = false
+		end
+		SendNotify("EA_FANGV1","Fly was automatically disabled due to your character respawn",5)
+	end
+	if FlingTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
+		ChangeToggleColor(FlingTarget_Button)
+		SendNotify("EA_FANGV1","Copy Anim was automatically disabled due to your character respawn",5)
+	end
+	if FocusTarget_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
+		ChangeToggleColor(FocusTarget_Button)
+		_G.ChatSync = false
+		SendNotify("EA_FANGV1","Chat Copy was automatically disabled due to your character respawn",5)
 	end
 	x.Humanoid.Died:Connect(function()
 		pcall(function()
@@ -2788,7 +2924,7 @@ plr.CharacterAdded:Connect(function(x)
 		end)
 	end)
 	task.wait(1)
-	local appearance = Players:GetCharacterAppearanceAsync(plr.UserId)
+	local appearance = players:GetCharacterAppearanceAsync(plr.UserId)
 	local original_accs = {}
 	local accs = {}
 	for i,acc in pairs(appearance:GetChildren()) do
@@ -2813,12 +2949,12 @@ plr.CharacterAdded:Connect(function(x)
 		end
 		if not (count == original_ammount) then
 			SysBroker:Destroy()
-			SendNotify("System Broken","An unexpected error occurred, re-joining...")
+			SendNotify("EA_FANGV1","An unexpected error occurred, re-joining...")
 			game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, plr)
 		end
 	else
 		SysBroker:Destroy()
-		SendNotify("System Broken","An unexpected error occurred, re-joining...")
+		SendNotify("EA_FANGV1","An unexpected error occurred, re-joining...")
 		game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, plr)
 	end
 	appearance:Destroy()
@@ -2851,18 +2987,17 @@ task.spawn(function()
 
 			if (plr.Name ~= original_name) or (plr.DisplayName ~= original_display) or (plr.UserId ~= plr.CharacterAppearanceId) then
 				SysBroker:Destroy()
-				SendNotify("System Broken","An unexpected error occurred, re-joining...")
+				SendNotify("EA_FANGV1","An unexpected error occurred, re-joining...")
 				game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, plr)
 			end
 			if (date_1 ~= original_date) and (date_2 ~= original_date) and (date_3 ~= original_date) then
 				SysBroker:Destroy()
-				SendNotify("System Broken","An unexpected error occurred, re-joining...")
+				SendNotify("EA_FANGV1","An unexpected error occurred, re-joining...")
 				game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, plr)
 			end
 		end)
 	end
 end)
 
-SendNotify("System Broken","Gui developed by MalwareHub - Discord in your clipboard",10)
--- setclipboard("https://discord.gg/RkhpySwNR9")
---loadstring(game:HttpGet("https://raw.githubusercontent.com/H20CalibreYT/SystemBroken/main/premium"))() -- load the premium
+SendNotify("EA_FANGV1","Gui developed by Ea_Fang - Discord in your clipboard",10)
+setclipboard("https://discord.gg/XqMthWdxDT")
