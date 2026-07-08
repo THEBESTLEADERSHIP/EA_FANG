@@ -319,7 +319,7 @@ local BenxTarget_Button = Instance.new("TextButton")
 local PushTarget_Button = Instance.new("TextButton")
 local WhitelistTarget_Button = Instance.new("TextButton")
 local TeleportTarget_Button = Instance.new("TextButton")
-local FrontHeadsit_Button = Instance.new("TextButton")  -- Renamed to Front Headsit
+local FrontHeadsit_Button = Instance.new("TextButton")
 local StandTarget_Button = Instance.new("TextButton")
 local BackpackTarget_Button = Instance.new("TextButton")
 local DoggyTarget_Button = Instance.new("TextButton")
@@ -2791,7 +2791,7 @@ BenxTarget_Button.MouseButton1Click:Connect(function()
     end
 end)
 
--- Front Headsit - Ultra strong with bob animation
+-- Front Headsit - using the exact logic from the user's code with UltraSticky
 local frontHeadsitStopper = nil
 FrontHeadsit_Button.MouseButton1Click:Connect(function()
     if TargetedPlayer == nil then
@@ -2801,13 +2801,86 @@ FrontHeadsit_Button.MouseButton1Click:Connect(function()
     ChangeToggleColor(FrontHeadsit_Button)
     if FrontHeadsit_Button.Ticket_Asset.ImageColor3 == Color3.fromRGB(0,255,0) then
         if frontHeadsitStopper then frontHeadsitStopper() end
-        frontHeadsitStopper = UltraStickyAttach(
-            Players[TargetedPlayer],
-            CFrame.new(0, 0.45, -0.5) * CFrame.Angles(0, math.pi, 0),
-            "507772104",
-            true,
-            true  -- bob enabled
-        )
+        
+        local con
+        local attached = true
+        local tickTime = 0
+        local function stopFrontHeadsit()
+            attached = false
+            if con then con:Disconnect(); con = nil end
+            plr.Character.Humanoid.Sit = false
+            if GetRoot(plr):FindFirstChild("BreakVelocity") then
+                GetRoot(plr).BreakVelocity:Destroy()
+            end
+            if GetRoot(plr):FindFirstChild("UltraStickyVel") then
+                GetRoot(plr).UltraStickyVel:Destroy()
+            end
+            if GetRoot(plr):FindFirstChild("UltraStickyGyro") then
+                GetRoot(plr).UltraStickyGyro:Destroy()
+            end
+            for _, part in pairs(plr.Character:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = true
+                    part.Massless = false
+                end
+            end
+            local hum = plr.Character:FindFirstChildOfClass("Humanoid")
+            if hum then
+                hum.MaxHealth = 100
+                hum.Health = 100
+                hum:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
+            end
+        end
+        
+        PlayAnim("507772104", 0, 1)
+        plr.Character.Humanoid.Sit = true
+        
+        for _, part in pairs(plr.Character:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = false
+                part.Massless = true
+            end
+        end
+        
+        local bodyVel = Instance.new("BodyVelocity")
+        bodyVel.Name = "UltraStickyVel"
+        bodyVel.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+        bodyVel.Velocity = Vector3.new(0,0,0)
+        bodyVel.Parent = GetRoot(plr)
+        
+        local bodyGyro = Instance.new("BodyGyro")
+        bodyGyro.Name = "UltraStickyGyro"
+        bodyGyro.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+        bodyGyro.P = 100000
+        bodyGyro.D = 5000
+        bodyGyro.Parent = GetRoot(plr)
+        
+        local hum = plr.Character:FindFirstChildOfClass("Humanoid")
+        if hum then
+            hum.MaxHealth = math.huge
+            hum.Health = math.huge
+            hum:SetStateEnabled(Enum.HumanoidStateType.Dead, false)
+        end
+        
+        con = RunService.Heartbeat:Connect(function()
+            if not attached or not Players[TargetedPlayer] or not Players[TargetedPlayer].Character or not Players[TargetedPlayer].Character:FindFirstChild("Head") then
+                stopFrontHeadsit()
+                return
+            end
+            local head = Players[TargetedPlayer].Character.Head
+            if head then
+                tickTime = tickTime + 0.04
+                local bobOffset = math.sin(tickTime * 10) * 0.05
+                local myRoot = GetRoot(plr)
+                -- Exact logic from user: Front of head with bob and facing away from target
+                myRoot.CFrame = head.CFrame * CFrame.new(0, 0.45 + bobOffset, -0.5) * CFrame.Angles(0, math.pi, 0)
+                myRoot.Velocity = Vector3.new(0,0,0)
+                bodyVel.Velocity = Vector3.new(0,0,0)
+                bodyGyro.CFrame = head.CFrame * CFrame.Angles(0, math.pi, 0)
+                if hum then hum.Health = math.huge end
+            end
+        end)
+        frontHeadsitStopper = stopFrontHeadsit
     else
         if frontHeadsitStopper then frontHeadsitStopper(); frontHeadsitStopper = nil end
         plr.Character.Humanoid.Sit = false
